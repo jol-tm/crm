@@ -99,11 +99,11 @@ if (isset($_POST["excluirProposta"]))
 	<table>
 		<thead>
 			<tr>
-				<th>N° Proposta</th>
+				<th>N° proposta</th>
 				<th>Cliente</th>
 				<th>Valor (R$)</th>
-				<th>Data Envio Proposta</th>
-				<th>Dias em Análise</th>
+				<th>Data envio proposta</th>
+				<th>Dias em análise</th>
 				<th>Status</th>
 				<th>Observações</th>
 				<th>Aceitar</th>
@@ -164,7 +164,7 @@ if (isset($_POST["excluirProposta"]))
 					<td>{$proposta['valor']}</td>
 					<td>{$proposta['dataEnvioProposta']}</td>
 					<td>{$proposta['diasEmAnalise']}</td>
-					<td class='{$statusProposta}'>{$proposta['statusProposta']}</td>
+					<td><mark class='{$statusProposta}'>{$proposta['statusProposta']}</mark></td>
 					<td>" . htmlspecialchars($proposta['observacoes']) . "</td>
 					<td>
 						<form action='' method='post'>
@@ -195,10 +195,6 @@ if (isset($_POST["excluirProposta"]))
 		</tbody>
 	</table>
 </div>
-
-<?php
-require_once "../../src/footer.php";
-?>
 
 </body>
 

@@ -39,7 +39,6 @@ body {
 
 input,
 button,
-table,
 svg,
 nav,
 .notification {
@@ -105,14 +104,28 @@ button:active {
 }
 
 table {
-	border: 2px solid var(--primaryColor);
-	background-color: var(--lightColor);
+    border-collapse: collapse;
+	text-align: center;
 }
 
-td,
+thead {
+    position: sticky;
+    top: 0;
+    background-color: #c1a995cc;
+    text-wrap: nowrap;
+}
+
 th {
-	text-align: center;
-	padding: 0.5rem;
+    padding: 0.5rem;
+}
+
+.tableResponsive {
+    max-height: 72vh;
+	max-width: 99vw;
+	overflow: auto;
+	border: 2px solid var(--primaryColor);
+	background-color: var(--lightColor);
+    border-radius: 0.5rem;
 }
 
 #searchBox {
@@ -147,11 +160,6 @@ th {
 	animation: showUp var(--transitionsDuration) ease;
 }
 
-.tableResponsive {
-	max-width: 98vw;
-	overflow: auto;
-}
-
 .notification {
 	z-index: 2;
 	position: fixed;
@@ -181,11 +189,6 @@ th {
 	padding: 0.25rem;
 	border-radius: 0.5rem;
 	background-color: var(--primaryColor);
-}
-
-#anchorLinksBox {
-	position: fixed;
-	bottom: 0.5rem;
 }
 
 /* LOGIN page*/
@@ -253,8 +256,10 @@ th {
 .accepted,
 .refused,
 .pending {
-	color: var(--lightColor);
-	border-radius: 0.5rem;
+    color: var(--lightColor);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    text-wrap: nowrap;
 }
 
 .received,

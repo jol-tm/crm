@@ -102,25 +102,25 @@ if (isset($_POST["mostrarAtualizarStatus"]) && filter_var($_POST["id"], FILTER_V
 	<table>
 		<thead>
 			<tr>
-				<th>N° Proposta</th>
+				<th>N° proposta</th>
 				<th>Cliente</th>
 				<th>Valor (R$)</th>
-				<th>Data Envio Proposta</th>
-				<th>Data Aceite Proposta</th>
-				<th>Dias em Análise</th>
-				<th>Status Proposta</th>
-				<th>N° Relatório</th>
-				<th>Data Envio Relatório</th>
+				<th>Data envio proposta</th>
+				<th>Data aceite proposta</th>
+				<th>Dias em análise</th>
+				<th>Status proposta</th>
+				<th>N° relatório</th>
+				<th>Data envio relatório</th>
 				<th>NF</th>
-				<th>Data Pagamento</th>
-				<th>Forma Pagamento</th>
-				<th>Status Pagamento</th>
-				<th>Dias Aguardando Pagamento</th>
-				<th>Data Última Cobrança</th>
-				<th>Dias desde Última Cobrança</th>
+				<th>Data pagamento</th>
+				<th>Forma pagamento</th>
+				<th>Status pagamento</th>
+				<th>Dias aguardando pagamento</th>
+				<th>Data última cobrança</th>
+				<th>Dias desde última cobrança</th>
 				<th>Observações</th>
-				<th>Atualizar Status</th>
-				<th>Voltar para Em análise</th>
+				<th>Atualizar status</th>
+				<th>Voltar para em análise</th>
 				<th>Apagar</th>
 			</tr>
 		</thead>
@@ -213,13 +213,13 @@ if (isset($_POST["mostrarAtualizarStatus"]) && filter_var($_POST["id"], FILTER_V
 					<td>{$proposta['dataEnvioProposta']}</td>
 					<td>{$proposta['dataAceiteProposta']}</td>
 					<td>{$proposta['diasEmAnalise']}</td>
-					<td class='$statusProposta'>{$proposta['statusProposta']}</td>
+					<td><mark class='$statusProposta'>{$proposta['statusProposta']}</mark></td>
 					<td>{$proposta['numeroRelatorio']}</td>
 					<td>{$proposta['dataEnvioRelatorio']}</td>
 					<td>{$proposta['numeroNotaFiscal']}</td>
 					<td>{$proposta['dataPagamento']}</td>
 					<td>" . htmlspecialchars($proposta['formaPagamento']) . "</td>
-					<td class='$statusPagamento'>{$proposta['statusPagamento']}</td>
+					<td><mark class='$statusPagamento'>{$proposta['statusPagamento']}</mark></td>
 					<td>{$proposta['diasAguardandoPagamento']}</td>
 					<td>{$proposta['dataUltimaCobranca']}</td>
 					<td>{$proposta['diasUltimaCobranca']}</td>
@@ -249,10 +249,6 @@ if (isset($_POST["mostrarAtualizarStatus"]) && filter_var($_POST["id"], FILTER_V
 		</tbody>
 	</table>
 </div>
-
-<?php
-require_once "../../src/footer.php";
-?>
 
 </body>
 

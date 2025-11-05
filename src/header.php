@@ -99,10 +99,6 @@ if ($pageTitle !== "Acesso")
 		<a id='$financeiroId' href='../financeiro/'>Financeiro</a>
 		<a id='$relatorioId' href='../relatorio/'>Relatório</a>
 	</nav>
-	<div id='anchorLinksBox'>
-		<a id='scrollTopBtn' href='#'>↑ Topo</a>
-		<a id='scrollBottomBtn' href='#footer'>↓ Final</a>
-	</div>
 	";
 }
 

@@ -5,7 +5,7 @@ class DatabaseConnection
     private string $hostname = "localhost";
     private string $username = "root";
     private string $password = "";
-    private string $database = "bms_crm";
+    private string $database = "crm";
     private ?object $connection = null;
 
     public function start(): object|bool
