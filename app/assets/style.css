@@ -49,9 +49,7 @@ nav,
 }
 
 nav {
-	z-index: 1;
-	position: sticky;
-	top: 0.5rem;
+    margin: 0.5rem 0 0 0;
 	background-color: var(--primaryColor);
 }
 
@@ -120,12 +118,31 @@ th {
 }
 
 .tableResponsive {
-    max-height: 72vh;
+    max-height: 83vh;
 	max-width: 99vw;
 	overflow: auto;
 	border: 2px solid var(--primaryColor);
 	background-color: var(--lightColor);
     border-radius: 0.5rem;
+}
+
+#authenticatedUser {
+    position: absolute;
+    top: 1rem;
+    right: 0.5rem;
+	a {
+		color: var(--lightColor);
+	    background-color: var(--destructiveColor);
+	    padding: 0.5rem;
+	    border-radius: 0.5rem;
+	}
+}
+
+#logo {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    height: 2rem;
 }
 
 #searchBox {
@@ -174,14 +191,6 @@ th {
 
 .failureNotification {
 	background-color: var(--destructiveColor);
-}
-
-#authenticatedUser {
-	text-align: center;
-
-	a {
-		color: var(--destructiveColor);
-	}
 }
 
 #scrollTopBtn,

@@ -10,7 +10,7 @@ require_once '../../src/Proposta.php';
 <body>
 	<form action='' method='get'>
 		<label for='data'>Mês e Ano (Qualquer dia)</label>
-		<input id='data' name='data' type='date' required>
+		<input id='data' name='data' type='date' value="<?= (new DateTime())->format("Y-m-d"); ?>" required>
 		<button type='submit'>Gerar relatório</button>
 	</form>
 	
