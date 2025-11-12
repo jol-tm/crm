@@ -47,13 +47,14 @@ body {
 	flex-direction: column;
 	gap: 0.5rem;
 	padding: 0.5rem;
-	overflow: hidden;
+	overflow: auto;
 	background-color: var(--backgroundColor);
 }
 
 header {
 	width: 100%;
 	display: flex;
+	gap: 0.5rem;
 	flex-direction: row-reverse;
 	align-items: center;
 	justify-content: space-between;
