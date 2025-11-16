@@ -21,7 +21,7 @@ class Proposta
 
 	public function verPropostasEmFaseFinanceira(): array
 	{
-		$propostas = $this->data->read("propostas", "WHERE statusProposta = 'Aceita' ORDER BY dataAceiteProposta ASC;");
+		$propostas = $this->data->read("propostas", "WHERE statusProposta = 'Aceita' ORDER BY dataAceiteProposta DESC;");
 		
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 
@@ -82,7 +82,7 @@ class Proposta
 
 	public function verPropostasEmFaseComercial(): array
 	{
-		$propostas = $this->data->read("propostas", "WHERE statusProposta = 'Em análise' OR statusProposta = 'Recusada' ORDER BY dataEnvioProposta ASC");
+		$propostas = $this->data->read("propostas", "WHERE statusProposta = 'Em análise' OR statusProposta = 'Recusada' ORDER BY dataEnvioProposta DESC");
 		
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 		
@@ -114,7 +114,7 @@ class Proposta
 			"valor",
 			"cliente",
 			"observacoes",
-		], $_GET["q"], "ORDER BY dataEnvioProposta ASC;");
+		], $_GET["q"], "ORDER BY dataEnvioProposta DESC;");
 		
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 		
