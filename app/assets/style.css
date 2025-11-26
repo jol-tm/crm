@@ -151,11 +151,10 @@ thead {
     position: sticky;
     top: 0;
     background-color: var(--primaryColorTransparent);
-    text-wrap: nowrap;
 }
 
-th {
-    padding: 0.5rem;
+th, td {
+    padding: 0.25rem;
 }
 
 .tableResponsive {
@@ -306,11 +305,11 @@ th {
 
 @keyframes notification {
 	10% {
-		top: 0.5rem;
+		top: 3rem;
 	}
 
 	90% {
-		top: 0.5rem;
+		top: 3rem;
 	}
 
 	100% {

@@ -111,15 +111,19 @@ if (isset($_POST["mostrarAtualizarStatus"]) && filter_var($_POST["id"], FILTER_V
 				<th>Data aceite proposta</th>
 				<th>Dias em análise</th>
 				<th>Status proposta</th>
+<!--
 				<th>N° relatório</th>
 				<th>Data envio relatório</th>
 				<th>NF</th>
+-->
 				<th>Data pagamento</th>
 				<th>Forma pagamento</th>
 				<th>Status pagamento</th>
 				<th>Dias aguardando pagamento</th>
+<!--
 				<th>Data última cobrança</th>
 				<th>Dias desde última cobrança</th>
+-->
 				<th>Observações</th>
 				<th>Atualizar status</th>
 				<th>Voltar para em análise</th>
@@ -165,7 +169,7 @@ if (isset($_POST["mostrarAtualizarStatus"]) && filter_var($_POST["id"], FILTER_V
 				{
 					$relatorio = (new Proposta())->gerarRelatorio("$ano-$mes");
 					echo "<tr><td colspan='20'><h2>{$meses[$mes]}/$ano</h2></td></tr>";
-					echo "<tr><td colspan='20'><h4>{$relatorio['propostasEnviadas']} propostas enviadas, {$relatorio['propostasAceitas']} aceitas, R$ {$relatorio['valorRecebido']} recebido</h4></td></tr>";
+					echo "<tr><td colspan='20'><h4>{$relatorio['propostasEnviadas']} propostas enviadas, {$relatorio['propostasAceitas']} aceitas, R$ {$relatorio['valorRecebido']} recebido de R$ {$relatorio['valorTotal']}</h4></td></tr>";
 				}
 				
 				$ultimoMes = $mes;
@@ -201,7 +205,7 @@ if (isset($_POST["mostrarAtualizarStatus"]) && filter_var($_POST["id"], FILTER_V
 					$voltarEmAnalise = "
 						<form action='' method='post'>
 							<input type='hidden' name='id' value='{$proposta['id']}'>
-							<button class='backPendingBtn' type='submit' name='voltarEmAnalise'>
+							<button class='backPendingBtn' type='submit' name='voltarEmAnalise' onclick=\"return confirm('Voltar para Em análise fará com que a contagem de dias em análise seja redefinida. Prosseguir?')\">
 							    <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-corner-up-left'><polyline points='9 14 4 9 9 4'></polyline><path d='M20 20v-7a4 4 0 0 0-4-4H4'></path></svg>
 							</button>
 						</form>";
@@ -220,15 +224,23 @@ if (isset($_POST["mostrarAtualizarStatus"]) && filter_var($_POST["id"], FILTER_V
 					<td>{$proposta['dataAceiteProposta']}</td>
 					<td>{$proposta['diasEmAnalise']}</td>
 					<td><mark class='$statusProposta'>{$proposta['statusProposta']}</mark></td>
+					
+					<!--
 					<td>{$proposta['numeroRelatorio']}</td>
 					<td>{$proposta['dataEnvioRelatorio']}</td>
 					<td>{$proposta['numeroNotaFiscal']}</td>
+					-->
+					
 					<td>{$proposta['dataPagamento']}</td>
 					<td>" . htmlspecialchars($proposta['formaPagamento']) . "</td>
 					<td><mark class='$statusPagamento'>{$proposta['statusPagamento']}</mark></td>
 					<td>{$proposta['diasAguardandoPagamento']}</td>
+					
+					<!--
 					<td>{$proposta['dataUltimaCobranca']}</td>
 					<td>{$proposta['diasUltimaCobranca']}</td>
+					-->
+					
 					<td>" . htmlspecialchars($proposta['observacoes']) . "</td>
 					<td>
 					   <form action='' method='post'>

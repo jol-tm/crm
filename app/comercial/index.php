@@ -141,7 +141,7 @@ if (isset($_POST["excluirProposta"]))
 				{
 					$relatorio = (new Proposta())->gerarRelatorio("$ano-$mes");
 					echo "<tr><td colspan='10'><h2>{$meses[$mes]}/$ano</h2></td></tr>";
-					echo "<tr><td colspan='10'><h4>{$relatorio['propostasEnviadas']} propostas enviadas</h4></td></tr>";
+					echo "<tr><td colspan='10'><h4>{$relatorio['propostasEnviadas']} propostas enviadas, {$relatorio['propostasAceitas']} aceitas</h4></td></tr>";
 				}
 				
 				$ultimoMes = $mes;

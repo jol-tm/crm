@@ -397,12 +397,14 @@ class Proposta
 		$propostasEnviadas = $this->data->count("propostas", "WHERE MONTH(dataEnvioProposta) = $mes AND YEAR(dataEnvioProposta) = $ano");
 		$propostasAceitas = $this->data->count("propostas", "WHERE MONTH(dataAceiteProposta) = $mes AND YEAR(dataAceiteProposta) = $ano");
 		$valorRecebido = $this->data->sum("propostas", "valor", "WHERE (MONTH(dataAceiteProposta) = $mes AND YEAR(dataAceiteProposta) = $ano) AND statusPagamento = 'Recebido'");
+		$valorTotal = $this->data->sum("propostas", "valor", "WHERE (MONTH(dataAceiteProposta) = $mes AND YEAR(dataAceiteProposta) = $ano) AND statusProposta = 'Aceita'");
 		
 		return [
 			"data" => "$mes/$ano",
 			"propostasEnviadas" => $propostasEnviadas,
 			"propostasAceitas" => $propostasAceitas,
-			"valorRecebido" => number_format($valorRecebido, 2, ',', '.')
+			"valorRecebido" => number_format($valorRecebido, 2, ',', '.'),
+			"valorTotal" => number_format($valorTotal, 2, ',', '.')
 		];
 	}
 }
