@@ -2,8 +2,7 @@
 
 <?php
 
-$baseAssetsPath = "/app/assets/";
-$baseAssetsPath = "/crm-system/app/assets/";
+$baseAssetsPath = "/crm/app/assets/";
 
 ini_set("display_errors", 1);
 ini_set("session.cookie_lifetime", 3600);
@@ -58,7 +57,7 @@ if (isset($_GET["desconectar"]))
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>BMS | <?= $pageTitle; ?></title>
 	<link rel="icon" href="<?= $baseAssetsPath . "logo.svg"; ?>" type="image/svg+xml">
-	<link rel="stylesheet" href="<?= $baseAssetsPath . "style.css?v4.2"; ?>">
+	<link rel="stylesheet" href="<?= $baseAssetsPath . "style.css?v4.3"; ?>">
 	<script defer src="<?= $baseAssetsPath . "script.js?v3"; ?>"></script>
 </head>
 
@@ -81,13 +80,13 @@ if ($pageTitle !== "Acesso")
 {
 	$comercialId = $pageTitle === "Comercial" ? "currentPage" : null;
 	$financeiroId = $pageTitle === "Financeiro" ? "currentPage" : null;
-	$relatorioId = $pageTitle === "Relatório" ? "currentPage" : null;
+	$clientesId = $pageTitle === "Clientes" ? "currentPage" : null;
 
 	echo "
 	<nav>
+		<a id='$clientesId' href='../clientes/'>Clientes</a>
 		<a id='$comercialId' href='../comercial/ '>Comercial</a>
 		<a id='$financeiroId' href='../financeiro/'>Financeiro</a>
-		<a id='$relatorioId' href='../relatorio/'>Relatório</a>
 	</nav>
 	<header>
 		<h5 id='authenticatedUser'>

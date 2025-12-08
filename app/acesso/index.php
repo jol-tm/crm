@@ -25,7 +25,7 @@ if (isset($_POST['acessar']) && !empty($_POST['email']) && !empty($_POST['senha'
 
 ?>
 
-<body>
+<body id='bodyLogin'>
 	<form id='formLogin' action='' method='post'>
 		<h1>Acesso</h1>
 		<input type='email' name='email' placeholder='Email' required>

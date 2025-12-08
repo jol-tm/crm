@@ -54,6 +54,23 @@ class DataRepository
 			return false;
 		}
 	}
+	
+	public function readJoin(string $table, string $columns, ?string $parameters = null): array|false
+	{
+		try
+		{
+			$sql = "SELECT $columns FROM $table JOIN $parameters";
+
+			$data = $this->connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+			return $data;
+		}
+		catch (PDOException $e)
+		{
+			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
+			return false;
+		}
+	}
 
 	public function search(string $table, array $columns, string $keyWord, ?string $parameters = null): array|false
 	{

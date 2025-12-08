@@ -42,7 +42,7 @@
 body {
 	font-family: var(--primaryFont), sans-serif;
 	display: flex;
-	justify-content: center;
+	justify-content: start;
 	align-items: center;
 	flex-direction: column;
 	gap: 0.5rem;
@@ -143,6 +143,7 @@ button:active {
 }
 
 table {
+	width: 100vw;
     border-collapse: collapse;
 	text-align: center;
 }
@@ -218,6 +219,10 @@ th, td {
 
 /* LOGIN page*/
 
+#bodyLogin {
+	justify-content: center;
+}
+
 #formLogin {
 	background-color: var(--lightColor);
 	width: 15rem;
@@ -228,7 +233,9 @@ th, td {
 .aproveProposalBtn,
 .denyProposalBtn,
 .deleteProposalBtn,
+.deleteClientBtn,
 .updateProposalBtn,
+.updateClientBtn,
 .backPendingBtn,
 .tableNavBtn,
 #searchBtn {
@@ -238,6 +245,22 @@ th, td {
 	height: 2.5rem;
 	padding: 0;
 	margin: auto;
+}
+
+/* CLIENTS */
+
+#cancelRegisterClientBtn,
+.deleteClientBtn {
+	background-color: var(--destructiveColor);
+}
+
+#cancelUpdateClientBtn {
+	text-align: center;
+	text-decoration: none;
+	padding: 0.625rem;
+	border-radius: 0.5rem;
+	color: var(--lightColor);
+	background-color: var(--destructiveColor);
 }
 
 /* COMERCIAL */
@@ -252,7 +275,7 @@ th, td {
 	background-color: var(--warnColor);
 }
 
-#registerProposalForm {
+#registerProposalForm, #registerClientForm {
 	display: none;
 }
 
@@ -270,7 +293,7 @@ th, td {
 #cancelUpdateStatusBtn {
 	text-align: center;
 	text-decoration: none;
-	padding: 0.5rem;
+	padding: 0.625rem;
 	border-radius: 0.5rem;
 	color: var(--lightColor);
 	background-color: var(--destructiveColor);
