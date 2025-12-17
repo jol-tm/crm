@@ -48,7 +48,7 @@ class Cliente
 			"endereco" => empty($_POST["endereco"]) ? null : $_POST["endereco"],
 		]);
 
-		if ($create === true)
+		if ($create["success"] === true)
 		{
 			$_SESSION["notification"] = [
 				"message" => "Cliente cadastrado com sucesso.",
@@ -59,7 +59,7 @@ class Cliente
 		}
 
 		$_SESSION["notification"] = [
-			"message" => "Erro ao cadastrar cliente. Cód: {$create['code']}",
+			"message" => "Erro ao cadastrar cliente. Cód: {$create['errorCode']}",
 			"status" => "failure"			
 		];
 		header("Location: ./");
@@ -69,7 +69,7 @@ class Cliente
 	public function atualizarCliente(): bool
 	{  	
 		print_r($_POST);
-		$affectedRows = $this->data->update("clientes", [
+		$update = $this->data->update("clientes", [
 				"nome" => empty($_POST["nome"]) ? null : $_POST["nome"],
 				"cpf_cnpj" => empty($_POST["cpf_cnpj"]) ? null : $_POST["cpf_cnpj"],
 				"razaoSocial" => empty($_POST["razaoSocial"]) ? null : $_POST["razaoSocial"],
@@ -83,7 +83,7 @@ class Cliente
 			]
 		);
 
-		if ($affectedRows > 0)
+		if ($update["affectedRows"] > 0)
 		{
 			$_SESSION["notification"] = [
 				"message" => "Cliente atualizado com sucesso.",
@@ -94,7 +94,7 @@ class Cliente
 		}
 		
 		$_SESSION["notification"] = [
-			"message" => "Erro ao atualizar cliente. Nada modificado.",
+			"message" => "Erro ao atualizar cliente. Nada modificado. Cód: {$update['errorCode']}",
 			"status" => "failure"			
 		];
 		header("Location: ./");
@@ -103,9 +103,9 @@ class Cliente
 	
 	public function excluirCliente(): bool
 	{
-		$affectedRows = $this->data->delete("clientes", ["id" => $_POST["id"]]);
+		$delete = $this->data->delete("clientes", ["id" => $_POST["id"]]);
 
-		if ($affectedRows > 0)
+		if ($delete["affectedRows"] > 0)
 		{
 			$_SESSION["notification"] = [
 				"message" => "Cliente excluído com sucesso.",

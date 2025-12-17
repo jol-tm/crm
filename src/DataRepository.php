@@ -38,7 +38,7 @@ class DataRepository
 		}
 	}
 
-	public function read(string $table, ?string $parameters = null): array|false
+	public function read(string $table, ?string $parameters = null): array
 	{
 		try
 		{
@@ -51,11 +51,11 @@ class DataRepository
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return false;
+			return [null];
 		}
 	}
 	
-	public function readJoin(string $table, string $columns, ?string $parameters = null): array|false
+	public function readJoin(string $table, string $columns, ?string $parameters = null): array
 	{
 		try
 		{
@@ -68,11 +68,11 @@ class DataRepository
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return false;
+			return [null];
 		}
 	}
 
-	public function search(string $table, array $columns, string $keyWord, ?string $parameters = null): array|false
+	public function search(string $table, array $columns, string $keyWord, ?string $parameters = null): array
 	{
 		try
 		{
@@ -98,11 +98,11 @@ class DataRepository
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return false;
+			return [null];
 		}
 	}
 	
-	public function count(string $table, ?string $parameters = null): int|false
+	public function count(string $table, ?string $parameters = null): ?int
 	{
 		try
 		{
@@ -115,11 +115,11 @@ class DataRepository
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return false;
+			return null;
 		}
 	}
 	
-	public function sum(string $table, string $column, ?string $parameters = null): float|false
+	public function sum(string $table, string $column, ?string $parameters = null): ?float
 	{
 		try
 		{
@@ -133,7 +133,7 @@ class DataRepository
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return false;
+			return null;
 		}
 	}
 
@@ -168,7 +168,7 @@ class DataRepository
 		}
 	}
 
-	public function delete(string $table, array $key): int|false
+	public function delete(string $table, array $key): array
 	{
 		try
 		{
@@ -179,12 +179,12 @@ class DataRepository
 			$stmt = $this->connection->prepare($sql);
 			$stmt->execute($key);
 
-			return $stmt->rowCount();
+			return ["success" => true, "affectedRows" => $stmt->rowCount()];
 		}
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return false;
+			return ["success" => false, "errorCode" => $e->getCode()];
 		}
 	}
 }

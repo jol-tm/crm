@@ -367,9 +367,9 @@ class Proposta
 	
 	public function excluirProposta(): bool
 	{
-		$update = $this->data->delete("propostas", ["id" => $_POST["id"]]);
+		$delete = $this->data->delete("propostas", ["id" => $_POST["id"]]);
 
-		if ($update["affectedRows"] > 0)
+		if ($delete["affectedRows"] > 0)
 		{
 			$_SESSION["notification"] = [
 				"message" => "Proposta excluída com sucesso.",
