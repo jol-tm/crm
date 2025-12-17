@@ -9,34 +9,12 @@ $cliente = new Cliente();
 
 if (isset($_POST["registerClientBtn"]))
 {
-	if (!empty($_POST["nome"]))
-	{
-		$cliente->cadastrarCliente();
-	}
-	else
-	{
-		header("Location: ./");
-		$_SESSION["notification"] = [
-			"message" => "Erro no cadastro! Informações incompletas!",
-			"status" => "failure"	
-		];
-	}
+	$cliente->cadastrarCliente();
 }
 
 if (isset($_POST["atualizarCliente"]))
 {
-	if (filter_var($_POST["id"], FILTER_VALIDATE_INT))
-	{
-		$cliente->atualizarCliente();
-	}
-	else
-	{
-		header("Location: ./");
-		$_SESSION["notification"] = [
-			"message" => "Erro na atualização. Informações inconsistentes!",
-			"status" => "failure"	
-		];
-	}
+	$cliente->atualizarCliente();
 }
 
 if (isset($_POST["excluirCliente"]))
@@ -44,7 +22,7 @@ if (isset($_POST["excluirCliente"]))
 	$cliente->excluirCliente();
 }
 
-if (isset($_POST["mostrarAtualizarCliente"]) && filter_var($_POST["id"], FILTER_VALIDATE_INT))
+if (isset($_POST["mostrarAtualizarCliente"]))
 {
 	$clienteParaAtualizar = $cliente->verCliente($_POST["id"]);
 
@@ -55,7 +33,7 @@ if (isset($_POST["mostrarAtualizarCliente"]) && filter_var($_POST["id"], FILTER_
 		<label for='nome'>Nome</label>
 		<input type='text' name='nome' id='nome' placeholder='' maxlength='255' value='{$clienteParaAtualizar['nome']}'>
 		<label for='cpf_cnpj'>CPF / CNPJ</label>
-		<input type='text' name='cpf_cnpj' id='cpf_cnpj' placeholder='Número sem pontuações' maxlength='14' value='{$clienteParaAtualizar['cpf_cnpj']}'>
+		<input type='text' name='cpf_cnpj' id='cpf_cnpj' placeholder='' maxlength='18' value='{$clienteParaAtualizar['cpf_cnpj']}'>
 		<label for='razaoSocial'>Razão social</label>
 		<input type='text' name='razaoSocial' id='razaoSocial' placeholder='' maxlength='255' value='{$clienteParaAtualizar['razaoSocial']}'>
 		<label for='emailContato'>Email contato</label>
@@ -84,7 +62,7 @@ if (isset($_POST["mostrarAtualizarCliente"]) && filter_var($_POST["id"], FILTER_
 		<label for="nome">Nome</label>
 		<input type="text" name="nome" id="nome" placeholder="" maxlength="255" required>
 		<label for="cpf_cnpj">CPF / CNPJ</label>
-		<input type="text" name="cpf_cnpj" id="cpf_cnpj" placeholder="Número sem pontuações" maxlength="14">
+		<input type="text" name="cpf_cnpj" id="cpf_cnpj" placeholder="" maxlength="18">
 		<label for="razaoSocial">Razão social</label>
 		<input type="text" name="razaoSocial" id="razaoSocial" placeholder="" maxlength="255">
 		<label for="emailContato">Email contato</label>
@@ -125,12 +103,12 @@ if (isset($_POST["mostrarAtualizarCliente"]) && filter_var($_POST["id"], FILTER_
 			echo "
 			<tr>
 				<td>" . htmlspecialchars($cliente["nome"]) . "</td>
-				<td>" .  htmlspecialchars($cliente["cpf_cnpj"]) . "</td>
-				<td>" .  htmlspecialchars($cliente["razaoSocial"]) . "</td>
-				<td>" .  htmlspecialchars($cliente["emailContato"]) . "</td>
-				<td>" .  htmlspecialchars($cliente["emailNF"]) . "</td>
-				<td>" .  htmlspecialchars($cliente["telefone"]) . "</td>
-				<td>" .  ($cliente["endereco"]) . "</td>
+				<td>" . htmlspecialchars($cliente["cpf_cnpj"]) . "</td>
+				<td>" . htmlspecialchars($cliente["razaoSocial"]) . "</td>
+				<td>" . htmlspecialchars($cliente["emailContato"]) . "</td>
+				<td>" . htmlspecialchars($cliente["emailNF"]) . "</td>
+				<td>" . htmlspecialchars($cliente["telefone"]) . "</td>
+				<td>" . htmlspecialchars($cliente["endereco"]) . "</td>
 				<td>
 					<form action='' method='post'>
 						<input type='hidden' name='id' value='{$cliente['id']}'>

@@ -9,7 +9,7 @@ class DataRepository
 		$this->connection = $connection;
 	}
 
-	public function create(string $table, array $data, ?array $password = null): bool
+	public function create(string $table, array $data, ?array $password = null): array
 	{
 		try
 		{
@@ -28,13 +28,13 @@ class DataRepository
 
 			$stmt = $this->connection->prepare($sql);
 			$stmt->execute($data);
-
-			return true;
+						
+			return ["success" => true];
 		}
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return false;
+			return ["success" => false, "errorCode" => $e->getCode()];
 		}
 	}
 
@@ -137,7 +137,7 @@ class DataRepository
 		}
 	}
 
-	public function update(string $table, array $data, array $key): int|false
+	public function update(string $table, array $data, array $key): array
 	{
 		try
 		{
@@ -159,12 +159,12 @@ class DataRepository
 			$stmt = $this->connection->prepare($sql);
 			$stmt->execute($data);
 
-			return $stmt->rowCount();
+			return ["success" => true, "affectedRows" => $stmt->rowCount()];
 		}
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return false;
+			return ["success" => false, "errorCode" => $e->getCode()];
 		}
 	}
 

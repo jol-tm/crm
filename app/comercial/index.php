@@ -10,67 +10,23 @@ $propostas = $proposta->verPropostasEmFaseComercial();
 
 if (isset($_POST["cadastrarProposta"]))
 {
-	if (!empty($_POST["dataEnvioProposta"]) && !empty($_POST["valor"]) && !empty($_POST["cliente"]))
-	{
-		$proposta->cadastrarProposta();
-	}
-	else
-	{
-		header("Location: ./");
-		$_SESSION["notification"] = [
-			"message" => "Erro no cadastro! Informações incompletas!",
-			"status" => "failure"	
-		];
-	}
+	$proposta->cadastrarProposta();
 }
 
 if (isset($_POST["aceitarProposta"]))
 {
-	if (filter_var($_POST["id"], FILTER_VALIDATE_INT) && isset($_POST["dataEnvioProposta"]))
-	{
-		$proposta->aceitarProposta();
-	}
-	else
-	{
-		header("Location: ./");
-		$_SESSION["notification"] = [
-			"message" => "Erro no aceite! Informações inconsistentes!",
-			"status" => "failure"	
-		];
-	}
+	$proposta->aceitarProposta();
 }
 
 
 if (isset($_POST["recusarProposta"]))
 {
-	if (filter_var($_POST["id"], FILTER_VALIDATE_INT) && isset($_POST["dataEnvioProposta"]))
-	{
-		$proposta->recusarProposta();
-	}
-	else
-	{
-		header("Location: ./");
-		$_SESSION["notification"] = [
-			"message" => "Erro na recusa! Informações inconsistentes!",
-			"status" => "failure"	
-		];
-	}
+	$proposta->recusarProposta();
 }
 
 if (isset($_POST["excluirProposta"]))
 {
-	if (filter_var($_POST["id"], FILTER_VALIDATE_INT))
-	{
-		$proposta->excluirProposta();
-	}
-	else
-	{
-		header("Location: ./");
-		$_SESSION["notification"] = [
-			"message" => "Erro na exclusão! Informações inconsistentes!",
-			"status" => "failure"	
-		];
-	}
+	$proposta->excluirProposta();
 }
 
 ?>
@@ -82,11 +38,11 @@ if (isset($_POST["excluirProposta"]))
 	<form action="" method="post" class="customForm">
 		<h2>Cadastrar Proposta</h2>
 		<label for="numeroProposta">N° da Proposta</label>
-		<input type="number" name="numeroProposta" id="numeroProposta" placeholder="Ex: 12325 ou 0 para nulo" max="99999999999" required>
+		<input type="number" name="numeroProposta" id="numeroProposta" placeholder="Ex: 12325 ou 0 para nulo" min="0" required>
 		<label for="dataEnvioProposta">Data de Envio da Proposta</label>
 		<input type="date" name="dataEnvioProposta" id="dataEnvioProposta" value="<?= (new DateTime())->format("Y-m-d"); ?>" required>
 		<label for="valor">Valor da Proposta</label>
-		<input type="number" step="0.01" name="valor" id="valor" placeholder="Ex: 999,99" maxlength="10" required>
+		<input type="number" name="valor" id="valor" placeholder="Ex: 999,99" step="0.01" min="1" required>
 		<label for="cliente">Cliente</label>
 		<input type="text" name="cliente" id="cliente" placeholder="Nome do Cliente" maxlength="255" required>
 		<label for="observacoes">Observações</label>

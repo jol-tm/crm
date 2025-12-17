@@ -178,18 +178,18 @@ class Proposta
 
 	public function cadastrarProposta(): bool
 	{
-		$created = $this->data->create("propostas", [
-			"numeroProposta" => $_POST["numeroProposta"] == 0 ? null : $_POST["numeroProposta"],
+		$create = $this->data->create("propostas", [
+			"numeroProposta" => $_POST["numeroProposta"] === 0 ? null : $_POST["numeroProposta"],
 			"dataEnvioProposta" => $_POST["dataEnvioProposta"],
 			"valor" => str_replace(",", ".", $_POST["valor"]),
 			"cliente" => $_POST["cliente"],
 			"observacoes" => empty($_POST["observacoes"]) ? null : $_POST["observacoes"],
 		]);
-
-		if ($created)
+		
+		if ($create["success"] === true)
 		{
 			$_SESSION["notification"] = [
-				"message" => "Proposta criada com sucesso.",
+				"message" => "Proposta cadastrada com sucesso.",
 				"status" => "success"			
 			];
 			header("Location: ./");
@@ -197,7 +197,7 @@ class Proposta
 		}
 
 		$_SESSION["notification"] = [
-			"message" => "Erro ao criar proposta.",
+			"message" => "Erro ao cadastrar proposta. Cód: {$create['errorCode']}",
 			"status" => "failure"			
 		];
 		header("Location: ./");
@@ -218,11 +218,10 @@ class Proposta
 				return false;
 			}
 
-			try // TryCatch porque dataPagamento pode ter seu input type alterado pelo usuário
-			{
-				$dataPagamento = (new DateTime($_POST["dataPagamento"]))->setTime(0, 0, 0);
-			}
-			catch (Exception $e)
+			$dataPagamento = DateTime::createFromFormat("Y-m-d", $_POST["dataPagamento"]);
+			
+			/*
+			if (!$dataPagamento)
 			{
 				$_SESSION["notification"] = [
 					"message" => "Data de pagamento inválida! Nada modificado!",
@@ -230,12 +229,12 @@ class Proposta
 				];
 				header("Location: ./");
 				return false;
-			}
+			}*/
 			
-			$_POST["diasAguardandoPagamento"] = (($dataPagamento)->diff($dataAceiteProposta->setTime(0, 0, 0)))->days;
+			$_POST["diasAguardandoPagamento"] = (($dataPagamento->setTime(0, 0, 0))->diff($dataAceiteProposta->setTime(0, 0, 0)))->days;
 		}		
 
-		$affectedRows = $this->data->update("propostas", [
+		$update = $this->data->update("propostas", [
 				"numeroProposta" => empty($_POST["numeroProposta"]) ? null : $_POST["numeroProposta"],
 				"cliente" => empty($_POST["cliente"]) ? null : $_POST["cliente"],
 				"numeroRelatorio" => empty($_POST["numeroRelatorio"]) ? null : $_POST["numeroRelatorio"],
@@ -255,7 +254,7 @@ class Proposta
 			]
 		);
 
-		if ($affectedRows > 0)
+		if ($update["affectedRows"] > 0)
 		{
 			$_SESSION["notification"] = [
 				"message" => "Status da Proposta atualizado com sucesso.",
@@ -266,7 +265,7 @@ class Proposta
 		}
 		
 		$_SESSION["notification"] = [
-			"message" => "Erro ao atualizar Status da Proposta. Nada modificado.",
+			"message" => "Erro ao atualizar Status da Proposta. Nada modificado. Cód: {$update['errorCode']}",
 			"status" => "failure"			
 		];
 		header("Location: ./");
@@ -278,7 +277,7 @@ class Proposta
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 		$diasEmAnalise = ($hoje->diff((DateTime::createFromFormat("d/m/Y", $_POST["dataEnvioProposta"]))->setTime(0, 0, 0)))->days;
 
-		$affectedRows = $this->data->update("propostas", [
+		$update = $this->data->update("propostas", [
 				"statusProposta" => "Aceita",
 				"statusPagamento" => "Aguardando", // Para caso ela tenha sido recusada e depois aceita
 				"dataAceiteProposta" => $hoje->format("Y-m-d"), 
@@ -288,7 +287,7 @@ class Proposta
 				"id" => $_POST["id"]
 			]);
 
-		if ($affectedRows > 0)
+		if ($update["affectedRows"] > 0)
 		{
 			$_SESSION["notification"] = [
 				"message" => "Proposta aceita com sucesso. Movida para Financeiro.",
@@ -308,17 +307,17 @@ class Proposta
 
 	public function voltarEmAnalise(): bool
 	{
-		$affectedRows = $this->data->update("propostas", [
+		$update = $this->data->update("propostas", [
 			"statusProposta" => "Em análise",
 		], 
 		[
 			"id" => $_POST["id"]
 		]);
 
-		if ($affectedRows > 0)
+		if ($update["affectedRows"] > 0)
 		{
 			$_SESSION["notification"] = [
-				"message" => "Proposta retornada para Em análise com sucesso. Movida para Comercial.",
+				"message" => "Proposta retornada para em análise com sucesso. Movida para Comercial.",
 				"status" => "success"			
 			];
 			header("Location: ./");
@@ -326,7 +325,7 @@ class Proposta
 		}
 
 		$_SESSION["notification"] = [
-			"message" => "Erro ao retornar proposta para Em análise. Nada modificado.",
+			"message" => "Erro ao retornar proposta para em análise. Nada modificado.",
 			"status" => "failure"			
 		];
 		header("Location: ./");
@@ -338,7 +337,7 @@ class Proposta
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 		$diasEmAnalise = ($hoje->diff((DateTime::createFromFormat("d/m/Y", $_POST["dataEnvioProposta"]))->setTime(0, 0, 0)))->days;
 		
-		$affectedRows = $this->data->update("propostas", [
+		$update = $this->data->update("propostas", [
 			"statusProposta" => "Recusada",
 			"statusPagamento" => "Recusada",
 			"diasEmAnalise" => $diasEmAnalise
@@ -347,7 +346,7 @@ class Proposta
 			"id" => $_POST["id"]
 		]);
 
-		if ($affectedRows > 0)
+		if ($update["affectedRows"] > 0)
 		{
 			$_SESSION["notification"] = [
 				"message" => "Proposta recusada com sucesso.",
@@ -368,9 +367,9 @@ class Proposta
 	
 	public function excluirProposta(): bool
 	{
-		$affectedRows = $this->data->delete("propostas", ["id" => $_POST["id"]]);
+		$update = $this->data->delete("propostas", ["id" => $_POST["id"]]);
 
-		if ($affectedRows > 0)
+		if ($update["affectedRows"] > 0)
 		{
 			$_SESSION["notification"] = [
 				"message" => "Proposta excluída com sucesso.",

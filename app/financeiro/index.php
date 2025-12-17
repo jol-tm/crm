@@ -21,18 +21,7 @@ else
 
 if (isset($_POST["excluirProposta"]))
 {
-	if (filter_var($_POST["id"], FILTER_VALIDATE_INT))
-	{
-		$proposta->excluirProposta();
-	}
-	else
-	{
-		header("Location: ./");
-		$_SESSION["notification"] = [
-			"message" => "Erro na exclusão. Informações inconsistentes!",
-			"status" => "failure"	
-		];
-	}
+	$proposta->excluirProposta();
 }
 
 if (isset($_POST["voltarEmAnalise"]))
@@ -42,21 +31,10 @@ if (isset($_POST["voltarEmAnalise"]))
 
 if (isset($_POST["atualizarStatusProposta"]))
 {
-	if (filter_var($_POST["id"], FILTER_VALIDATE_INT) && isset($_POST["dataAceiteProposta"]))
-	{
-		$proposta->atualizarStatusProposta();
-	}
-	else
-	{
-		header("Location: ./");
-		$_SESSION["notification"] = [
-			"message" => "Erro na atualização. Informações inconsistentes!",
-			"status" => "failure"	
-		];
-	}
+	$proposta->atualizarStatusProposta();
 }
 
-if (isset($_POST["mostrarAtualizarStatus"]) && filter_var($_POST["id"], FILTER_VALIDATE_INT))
+if (isset($_POST["mostrarAtualizarStatus"]))
 {
 	$propostaParaAtualizar = $proposta->verProposta($_POST["id"]);
 
@@ -66,21 +44,27 @@ if (isset($_POST["mostrarAtualizarStatus"]) && filter_var($_POST["id"], FILTER_V
 		<input type='hidden' name='id' value='{$propostaParaAtualizar['id']}'>
 		<input type='hidden' name='dataAceiteProposta' value='{$_POST['dataAceiteProposta']}'>
 		<label for='numeroProposta'>N° da Proposta</label>
-		<input type='number' name='numeroProposta' id='numeroProposta' placeholder='Ex: 12325 ou 0 para nulo' max='99999999999' value='{$propostaParaAtualizar['numeroProposta']}'>
+		<input type='number' name='numeroProposta' id='numeroProposta' placeholder='Ex: 12325 ou 0 para nulo' min='0' value='{$propostaParaAtualizar['numeroProposta']}'>
 		<label for='cliente'>Cliente</label>
 		<input type='text' name='cliente' id='cliente' placeholder='Nome do Cliente' maxlength='255' value='{$propostaParaAtualizar['cliente']}'>
+		<!--
 		<label for='dataEnvioRelatorio'>Data de Envio do Relatorio</label>
 		<input type='date' name='dataEnvioRelatorio' id='dataEnvioRelatorio' value='{$propostaParaAtualizar['dataEnvioRelatorio']}'>
+		-->
 		<label for='valor'>Valor da Proposta</label>
-		<input type='number' step='0.01' name='valor' id='valor' placeholder='Ex: 999,99' maxlength='10' value='{$propostaParaAtualizar['valor']}'>
+		<input type='number' step='0.01' name='valor' id='valor' placeholder='Ex: 999,99' min='0' value='{$propostaParaAtualizar['valor']}'>
+		<!--
 		<label for='numeroNotaFiscal'>NF</label>
-		<input type='number' name='numeroNotaFiscal' id='numeroNotaFiscal' placeholder='Ex: 123456789' max='999999999' value='{$propostaParaAtualizar['numeroNotaFiscal']}'>
+		<input type='number' name='numeroNotaFiscal' id='numeroNotaFiscal' placeholder='Ex: 123456789' value='{$propostaParaAtualizar['numeroNotaFiscal']}'>
+		-->
 		<label for='dataPagamento'>Data do Pagamento</label>
 		<input type='date' name='dataPagamento' id='dataPagamento' value='{$propostaParaAtualizar['dataPagamento']}'>
 		<label for='formaPagamento'>Forma de Pagamento</label>
 		<input type='text' name='formaPagamento' id='formaPagamento' placeholder='Ex: Parcelado 2x' maxlength='255' value='{$propostaParaAtualizar['formaPagamento']}'>
+		<!--
 		<label for='dataUltimaCobranca'>Data Última Cobrança</label>
 		<input type='date' name='dataUltimaCobranca' id='dataUltimaCobranca' value='{$propostaParaAtualizar['dataUltimaCobranca']}'>
+		-->
 		<label for='observacoes'>Observações</label>
 		<input type='text' name='observacoes' id='observacoes' placeholder='Ex: Desenvolvimento...' maxlength='255' value='{$propostaParaAtualizar['observacoes']}'>
 		<button id='updateStatusBtn' type='submit' name='atualizarStatusProposta'>Atualizar</button>
@@ -205,7 +189,7 @@ if (isset($_POST["mostrarAtualizarStatus"]) && filter_var($_POST["id"], FILTER_V
 					$voltarEmAnalise = "
 						<form action='' method='post'>
 							<input type='hidden' name='id' value='{$proposta['id']}'>
-							<button class='backPendingBtn' type='submit' name='voltarEmAnalise' onclick=\"return confirm('Voltar para Em análise fará com que a contagem de dias em análise seja redefinida. Prosseguir?')\">
+							<button class='backPendingBtn' type='submit' name='voltarEmAnalise' onclick=\"return confirm('Voltar para em análise fará com que as contagens de dias sejam redefinidas. Prosseguir?')\">
 							    <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-corner-up-left'><polyline points='9 14 4 9 9 4'></polyline><path d='M20 20v-7a4 4 0 0 0-4-4H4'></path></svg>
 							</button>
 						</form>";
