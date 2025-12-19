@@ -208,23 +208,10 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 					<td>{$proposta['dataAceiteProposta']}</td>
 					<td>{$proposta['diasEmAnalise']}</td>
 					<td><mark class='$statusProposta'>{$proposta['statusProposta']}</mark></td>
-					
-					<!--
-					<td>{$proposta['numeroRelatorio']}</td>
-					<td>{$proposta['dataEnvioRelatorio']}</td>
-					<td>{$proposta['numeroNotaFiscal']}</td>
-					-->
-					
 					<td>{$proposta['dataPagamento']}</td>
 					<td>" . htmlspecialchars($proposta['formaPagamento']) . "</td>
 					<td><mark class='$statusPagamento'>{$proposta['statusPagamento']}</mark></td>
 					<td>{$proposta['diasAguardandoPagamento']}</td>
-					
-					<!--
-					<td>{$proposta['dataUltimaCobranca']}</td>
-					<td>{$proposta['diasUltimaCobranca']}</td>
-					-->
-					
 					<td>" . htmlspecialchars($proposta['observacoes']) . "</td>
 					<td>
 					   <form action='' method='post'>

@@ -38,7 +38,7 @@ if (isset($_POST["excluirProposta"]))
 	<form action="" method="post" class="customForm">
 		<h2>Cadastrar Proposta</h2>
 		<label for="numeroProposta">N° da Proposta</label>
-		<input type="number" name="numeroProposta" id="numeroProposta" placeholder="Ex: 12325 ou 0 para nulo" min="0" required>
+		<input type="number" name="numeroProposta" id="numeroProposta" placeholder="Ex: 12325" min="0">
 		<label for="dataEnvioProposta">Data de Envio da Proposta</label>
 		<input type="date" name="dataEnvioProposta" id="dataEnvioProposta" value="<?= (new DateTime())->format("Y-m-d"); ?>" required>
 		<label for="valor">Valor da Proposta</label>

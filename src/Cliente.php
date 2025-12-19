@@ -25,12 +25,10 @@ class Cliente
 		
 		foreach ($clientes as &$cliente)
 		{
-			$cliente['cpf_cnpj'] === null ? $cliente['cpf_cnpj'] = '-' : null;
-			$cliente['razaoSocial'] === null ? $cliente['razaoSocial'] = '-' : null;
-			$cliente['emailContato'] === null ? $cliente['emailContato'] = '-' : null;
-			$cliente['emailNF'] === null ? $cliente['emailNF'] = '-' : null;
-			$cliente['telefone'] === null ? $cliente['telefone'] = '-' : null;
-			$cliente['endereco'] === null ? $cliente['endereco'] = '-' : null;
+			foreach ($cliente as $key => $valor)
+			{
+				empty($valor) ? $cliente[$key] = "-" : null;
+			}
 		}
 		
 		return $clientes;
@@ -40,12 +38,12 @@ class Cliente
 	{
 		$create = $this->data->create("clientes", [
 			"nome" => $_POST["nome"],
-			"cpf_cnpj" => empty($_POST["cpf_cnpj"]) ? null : $_POST["cpf_cnpj"],
-			"razaoSocial" => empty($_POST["razaoSocial"]) ? null : $_POST["razaoSocial"],
-			"emailContato" => empty($_POST["emailContato"]) ? null : $_POST["emailContato"],
-			"emailNF" => empty($_POST["emailNF"]) ? null : $_POST["emailNF"],
-			"telefone" => empty($_POST["telefone"]) ? null : $_POST["telefone"],
-			"endereco" => empty($_POST["endereco"]) ? null : $_POST["endereco"],
+			"cpf_cnpj" => $_POST["cpf_cnpj"],
+			"razaoSocial" => $_POST["razaoSocial"],
+			"emailContato" => $_POST["emailContato"],
+			"emailNF" => $_POST["emailNF"],
+			"telefone" => $_POST["telefone"],
+			"endereco" => $_POST["endereco"],
 		]);
 
 		if ($create["success"] === true)
@@ -70,13 +68,13 @@ class Cliente
 	{  	
 		print_r($_POST);
 		$update = $this->data->update("clientes", [
-				"nome" => empty($_POST["nome"]) ? null : $_POST["nome"],
-				"cpf_cnpj" => empty($_POST["cpf_cnpj"]) ? null : $_POST["cpf_cnpj"],
-				"razaoSocial" => empty($_POST["razaoSocial"]) ? null : $_POST["razaoSocial"],
-				"emailContato" => empty($_POST["emailContato"]) ? null : $_POST["emailContato"],
-				"emailNF" => empty($_POST["emailNF"]) ? null : $_POST["emailNF"],
-				"telefone" => empty($_POST["telefone"]) ? null : $_POST["telefone"],
-				"endereco" => empty($_POST["endereco"]) ? null : $_POST["endereco"],
+				"nome" => $_POST["nome"],
+				"cpf_cnpj" => $_POST["cpf_cnpj"],
+				"razaoSocial" => $_POST["razaoSocial"],
+				"emailContato" => $_POST["emailContato"],
+				"emailNF" => $_POST["emailNF"],
+				"telefone" => $_POST["telefone"],
+				"endereco" => $_POST["endereco"],
 			],
 			[
 				"id" => $_POST["id"]

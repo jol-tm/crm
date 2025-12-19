@@ -38,7 +38,7 @@ class DataRepository
 		}
 	}
 
-	public function read(string $table, ?string $parameters = null): array
+	public function read(string $table, ?string $parameters = null): ?array
 	{
 		try
 		{
@@ -51,11 +51,11 @@ class DataRepository
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return [null];
+			return null;
 		}
 	}
 	
-	public function readJoin(string $table, string $columns, ?string $parameters = null): array
+	public function readJoin(string $table, string $columns, ?string $parameters = null): ?array
 	{
 		try
 		{
@@ -68,11 +68,11 @@ class DataRepository
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return [null];
+			return null;
 		}
 	}
 
-	public function search(string $table, array $columns, string $keyWord, ?string $parameters = null): array
+	public function search(string $table, array $columns, string $keyWord, ?string $parameters = null): ?array
 	{
 		try
 		{
@@ -98,7 +98,7 @@ class DataRepository
 		catch (PDOException $e)
 		{
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return [null];
+			return null;
 		}
 	}
 	

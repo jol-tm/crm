@@ -18,7 +18,31 @@ class Proposta
 	{
 		return $this->data->read("propostas", "WHERE id = $id")[0];
 	}
-
+	
+	public function verPropostasEmFaseComercial(): array
+	{
+		$propostas = $this->data->read("propostas", "WHERE statusProposta = 'Em análise' OR statusProposta = 'Recusada' ORDER BY dataEnvioProposta DESC");
+		
+		$hoje = (new DateTime())->setTime(0, 0, 0);
+		
+		foreach ($propostas as &$proposta)
+		{
+			$proposta["dataEnvioProposta"] = new DateTime($proposta["dataEnvioProposta"]);
+			// Diferença de hoje caso ainda esteja em análise ou valor guardado no banco se foi aceita/recusada
+			$proposta["diasEmAnalise"] = $proposta["statusProposta"] === "Em análise" ? $hoje->diff($proposta["dataEnvioProposta"])->days : $proposta["diasEmAnalise"];
+			$proposta["dataEnvioProposta"] = $proposta["dataEnvioProposta"]->format("d/m/Y");
+			
+			foreach ($proposta as $key => $valor)
+			{
+				empty($valor) ? $proposta[$key] = "-" : null;
+			}
+			
+			$proposta["valor"] = number_format($proposta["valor"], 2, ',', '.');
+		}
+		
+		return $propostas;
+	}
+	
 	public function verPropostasEmFaseFinanceira(): array
 	{
 		$propostas = $this->data->read("propostas", "WHERE statusProposta = 'Aceita' ORDER BY dataAceiteProposta DESC;");
@@ -30,27 +54,9 @@ class Proposta
 			if ($proposta["dataAceiteProposta"] !== null)
 			{
 				$proposta["dataAceiteProposta"] = new DateTime($proposta["dataAceiteProposta"]);
-				// Se statusPagamento é Aguardando calcula dias com base em hoje, senão pega o dado que foi salvo no banco quando recebeu o pagamento
+				// Diferença de hoje caso ainda esteja aguardando ou valor guardado no banco se já foi recebido
 				$proposta["diasAguardandoPagamento"] = $proposta["statusPagamento"] === "Aguardando" ? $hoje->diff($proposta["dataAceiteProposta"])->days : $proposta["diasAguardandoPagamento"];
 				$proposta["dataAceiteProposta"] = $proposta["dataAceiteProposta"]->format("d/m/Y");
-			}
-			
-			if ($proposta["dataUltimaCobranca"] !== null)
-			{
-				$proposta["dataUltimaCobranca"] = new DateTime($proposta["dataUltimaCobranca"]);
-				
-				if ($proposta["statusPagamento"] === "Aguardando")
-				{
-					// Só calcula e consequentente só mostra diasUltimaCobranca enquanto status é Aguardando
-					$proposta["diasUltimaCobranca"] = $hoje->diff($proposta["dataUltimaCobranca"])->days;
-				}
-				
-				$proposta["dataUltimaCobranca"] = $proposta["dataUltimaCobranca"]->format("d/m/Y");
-			}
-			
-			if ($proposta["dataEnvioRelatorio"] !== null)
-			{
-				$proposta["dataEnvioRelatorio"] = (new DateTime($proposta["dataEnvioRelatorio"]))->format("d/m/Y");
 			}
 			
 			if ($proposta["dataPagamento"] !== null)
@@ -58,54 +64,20 @@ class Proposta
 				$proposta["dataPagamento"] = (new DateTime($proposta["dataPagamento"]))->format("d/m/Y");
 			}
 			
-			// Não há um "if not null" aqui como nas acima porque dataEnvioProposta nunca será nulo
 			$proposta["dataEnvioProposta"] = (new DateTime($proposta["dataEnvioProposta"]))->format("d/m/Y");
 			
-			empty($proposta["dataAceiteProposta"]) ? $proposta["dataAceiteProposta"] = "-" : null;
-			empty($proposta["dataUltimaCobranca"]) ? $proposta["dataUltimaCobranca"] = "-" : null;
-			empty($proposta["dataEnvioRelatorio"]) ? $proposta["dataEnvioRelatorio"] = "-" : null;
-			empty($proposta["dataPagamento"]) ? $proposta["dataPagamento"] = "-" : null;
-			empty($proposta["numeroNotaFiscal"]) ? $proposta["numeroNotaFiscal"] = "-" : null;
-			empty($proposta["formaPagamento"]) ? $proposta["formaPagamento"] = "-" : null;
-			empty($proposta["numeroRelatorio"]) ? $proposta["numeroRelatorio"] = "-" : null;
-			empty($proposta["observacoes"]) ? $proposta["observacoes"] = "-" : null;
-			empty($proposta["numeroProposta"]) ? $proposta["numeroProposta"] = "-" : null;
-			// isset() em vez de empty() para considerar 0. Lembrando que empty(0) retorna true 
-			isset($proposta["diasEmAnalise"]) ? null : $proposta["diasEmAnalise"] = "-";
-			isset($proposta["diasAguardandoPagamento"]) ? null : $proposta["diasAguardandoPagamento"] = "-";
-			isset($proposta["diasUltimaCobranca"]) ? null : $proposta["diasUltimaCobranca"] = "-";
-			$proposta["valor"] = str_replace(".", ",", $proposta["valor"]);
+			foreach ($proposta as $key => $valor)
+			{
+				empty($valor) ? $proposta[$key] = "-" : null;
+			}
+			
+			$proposta["valor"] = number_format($proposta["valor"], 2, ',', '.');
 		}
 		
 		return $propostas;
 	}
 
-	public function verPropostasEmFaseComercial(): array
-	{
-		$propostas = $this->data->read("propostas", "WHERE statusProposta = 'Em análise' OR statusProposta = 'Recusada' ORDER BY dataEnvioProposta DESC");
-		
-		$hoje = (new DateTime())->setTime(0, 0, 0);
-		
-		foreach ($propostas as &$proposta)
-		{
-			$proposta["dataEnvioProposta"] = new DateTime($proposta["dataEnvioProposta"]);
-
-			// Se status é Em análise calcula dias com base em hoje, senão pega o dado que foi salvo no banco quando aceitou a proposta
-			$proposta["diasEmAnalise"] = $proposta["statusProposta"] === "Em análise" ? $hoje->diff($proposta["dataEnvioProposta"])->days : $proposta["diasEmAnalise"];
-
-			$proposta["dataEnvioProposta"] = $proposta["dataEnvioProposta"]->format("d/m/Y");
-			
-			$proposta["valor"] = str_replace(".", ",", $proposta["valor"]);
-			
-			empty($proposta["numeroProposta"]) ? $proposta["numeroProposta"] = "-" : null;
-			
-			empty($proposta["observacoes"]) ? $proposta["observacoes"] = "-" : null;
-		}
-		
-		return $propostas;
-	}
-	
-	public function pesquisarProposta(): array|false
+	public function pesquisarProposta(): array
 	{
 		$propostas = $this->data->search("propostas", [
 			"numeroProposta",
@@ -123,54 +95,26 @@ class Proposta
 			if ($proposta["dataAceiteProposta"] !== null)
 			{
 				$proposta["dataAceiteProposta"] = new DateTime($proposta["dataAceiteProposta"]);
-				// Se statusPagamento é Aguardando calcula dias com base em hoje, senão pega o dado que foi salvo no banco quando recebeu o pagamento
+				// Diferença de hoje caso ainda esteja aguardando ou valor guardado no banco se já foi recebido
 				$proposta["diasAguardandoPagamento"] = $proposta["statusPagamento"] === "Aguardando" ? $hoje->diff($proposta["dataAceiteProposta"])->days : $proposta["diasAguardandoPagamento"];
 				$proposta["dataAceiteProposta"] = $proposta["dataAceiteProposta"]->format("d/m/Y");
 			}
 			
-			if ($proposta["dataUltimaCobranca"] !== null)
-			{
-				$proposta["dataUltimaCobranca"] = new DateTime($proposta["dataUltimaCobranca"]);
-				
-				if ($proposta["statusPagamento"] === "Aguardando")
-				{
-					// Só calcula e consequentente só mostra diasUltimaCobranca enquanto status é Aguardando
-					$proposta["diasUltimaCobranca"] = $hoje->diff($proposta["dataUltimaCobranca"])->days;
-				}
-				
-				$proposta["dataUltimaCobranca"] = $proposta["dataUltimaCobranca"]->format("d/m/Y");
-			}
-			
-			if ($proposta["dataEnvioRelatorio"] !== null)
-			{
-				$proposta["dataEnvioRelatorio"] = (new DateTime($proposta["dataEnvioRelatorio"]))->format("d/m/Y");
-			}
+			$proposta["dataEnvioProposta"] = new DateTime($proposta["dataEnvioProposta"]);
+			$proposta["diasEmAnalise"] = $proposta["statusProposta"] === "Em análise" ? $hoje->diff($proposta["dataEnvioProposta"])->days : $proposta["diasEmAnalise"];
+			$proposta["dataEnvioProposta"] = ($proposta["dataEnvioProposta"])->format("d/m/Y");
 			
 			if ($proposta["dataPagamento"] !== null)
 			{
 				$proposta["dataPagamento"] = (new DateTime($proposta["dataPagamento"]))->format("d/m/Y");
 			}
 			
-			// Não há um "if not null" aqui como nas acima porque dataEnvioProposta nunca será nulo
-			$proposta["dataEnvioProposta"] = new DateTime($proposta["dataEnvioProposta"]);
-			
-			empty($proposta["numeroProposta"]) ? $proposta["numeroProposta"] = "-" : null;
-			empty($proposta["dataAceiteProposta"]) ? $proposta["dataAceiteProposta"] = "-" : null;
-			empty($proposta["dataUltimaCobranca"]) ? $proposta["dataUltimaCobranca"] = "-" : null;
-			empty($proposta["dataEnvioRelatorio"]) ? $proposta["dataEnvioRelatorio"] = "-" : null;
-			empty($proposta["dataPagamento"]) ? $proposta["dataPagamento"] = "-" : null;
-			empty($proposta["numeroNotaFiscal"]) ? $proposta["numeroNotaFiscal"] = "-" : null;
-			empty($proposta["formaPagamento"]) ? $proposta["formaPagamento"] = "-" : null;
-			empty($proposta["numeroRelatorio"]) ? $proposta["numeroRelatorio"] = "-" : null;
-			empty($proposta["observacoes"]) ? $proposta["observacoes"] = "-" : null;
-			// isset() em vez de empty() para considerar 0. Lembrando que empty(0) retorna true
-			isset($proposta["diasAguardandoPagamento"]) ? null : $proposta["diasAguardandoPagamento"] = "-";
-			isset($proposta["diasUltimaCobranca"]) ? null : $proposta["diasUltimaCobranca"] = "-";
-			// Faz o cálculo baseado no dia atual ou usa o valor do banco, porque ao pesquisar vão aparecer propostas de fase comercial e financeiro.
-			$proposta["diasEmAnalise"] = $proposta["statusProposta"] === "Em análise" ? $hoje->diff($proposta["dataEnvioProposta"])->days : $proposta["diasEmAnalise"];
-			// Depois de realizar o cálculo formata o DateTime para uma string para mostrar na tela
-			$proposta["dataEnvioProposta"] = ($proposta["dataEnvioProposta"])->format("d/m/Y");
-			$proposta["valor"] = str_replace(".", ",", $proposta["valor"]);
+			foreach($proposta as $key => $valor)
+			{
+				empty($valor) ? $proposta[$key] = "-" : null;
+			}
+			 
+			$proposta["valor"] = number_format($proposta["valor"], 2, ',', '.');
 		}
 		
 		return $propostas;
@@ -179,11 +123,11 @@ class Proposta
 	public function cadastrarProposta(): bool
 	{
 		$create = $this->data->create("propostas", [
-			"numeroProposta" => $_POST["numeroProposta"] === 0 ? null : $_POST["numeroProposta"],
+			"numeroProposta" => empty($_POST["numeroProposta"]) ? null : $_POST["numeroProposta"],
 			"dataEnvioProposta" => $_POST["dataEnvioProposta"],
 			"valor" => str_replace(",", ".", $_POST["valor"]),
 			"cliente" => $_POST["cliente"],
-			"observacoes" => empty($_POST["observacoes"]) ? null : $_POST["observacoes"],
+			"observacoes" => $_POST["observacoes"],
 		]);
 		
 		if ($create["success"] === true)
@@ -206,7 +150,7 @@ class Proposta
 
 	public function atualizarStatusProposta(): bool
 	{  
-		if (!empty($_POST["dataPagamento"])) // Isso se repete toda atualização que possua dataPagamento no POST mesmo já tendo diasAguardandoPagamento no banco
+		if (!empty($_POST["dataPagamento"])) // Acontece toda atualização com dataPagamento mesmo já tendo diasAguardandoPagamento no banco 
 		{
 			if (!$dataAceiteProposta = DateTime::createFromFormat("d/m/Y", $_POST["dataAceiteProposta"]))
 			{
@@ -219,35 +163,18 @@ class Proposta
 			}
 
 			$dataPagamento = DateTime::createFromFormat("Y-m-d", $_POST["dataPagamento"]);
-			
-			/*
-			if (!$dataPagamento)
-			{
-				$_SESSION["notification"] = [
-					"message" => "Data de pagamento inválida! Nada modificado!",
-					"status" => "failure"		
-				];
-				header("Location: ./");
-				return false;
-			}*/
-			
 			$_POST["diasAguardandoPagamento"] = (($dataPagamento->setTime(0, 0, 0))->diff($dataAceiteProposta->setTime(0, 0, 0)))->days;
 		}		
 
 		$update = $this->data->update("propostas", [
 				"numeroProposta" => empty($_POST["numeroProposta"]) ? null : $_POST["numeroProposta"],
-				"cliente" => empty($_POST["cliente"]) ? null : $_POST["cliente"],
-				"numeroRelatorio" => empty($_POST["numeroRelatorio"]) ? null : $_POST["numeroRelatorio"],
-				"dataEnvioRelatorio" => empty($_POST["dataEnvioRelatorio"]) ? null : $_POST["dataEnvioRelatorio"],
-				"valor" => empty($_POST["valor"]) ? null : str_replace(",", ".", $_POST["valor"]),
-				"numeroNotaFiscal" => empty($_POST["numeroNotaFiscal"]) ? null : $_POST["numeroNotaFiscal"],
+				"cliente" => $_POST["cliente"],
+				"valor" => str_replace(",", ".", $_POST["valor"]),
 				"dataPagamento" => empty($_POST["dataPagamento"]) ? null : $_POST["dataPagamento"],
 				"statusPagamento" => empty($_POST["dataPagamento"]) ? "Aguardando" : "Recebido",
-				"formaPagamento" => empty($_POST["formaPagamento"]) ? null : $_POST["formaPagamento"],
-				"observacoes" => empty($_POST["observacoes"]) ? null : $_POST["observacoes"],
-				"dataUltimaCobranca" => empty($_POST["dataUltimaCobranca"]) ? null : $_POST["dataUltimaCobranca"],
-				// isset() para considerar 0
-				"diasAguardandoPagamento" => isset($_POST["diasAguardandoPagamento"]) ? $_POST["diasAguardandoPagamento"] : null,
+				"formaPagamento" => $_POST["formaPagamento"],
+				"observacoes" => $_POST["observacoes"],
+				"diasAguardandoPagamento" => $_POST["diasAguardandoPagamento"],
 			],
 			[
 				"id" => $_POST["id"]
