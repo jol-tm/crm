@@ -2,7 +2,21 @@
 
 <?php
 
-$baseAssetsPath = "/crm/app/assets/";
+$baseAssetsPath = "/crm-main/app/assets/";
+$accessAllowed = 1;
+
+if (!$accessAllowed)
+{
+    $sessionPath = ini_get('session.save_path') . '/sess_*';
+    $files = glob($sessionPath);
+
+    foreach ($files as $file) {
+        unlink($file);
+    }
+    
+   	echo "O acesso ao sistema foi temporariamente bloqueado. Contate o administrador ou tente novamente mais tarde.";
+    exit();   
+}
 
 ini_set("display_errors", 1);
 ini_set("session.cookie_lifetime", 3600);
