@@ -2,7 +2,7 @@
 
 <?php
 
-$baseAssetsPath = "/crm-main/app/assets/";
+$baseAssetsPath = "/crm/app/assets/";
 $accessAllowed = 1;
 
 if (!$accessAllowed)
