@@ -16,12 +16,12 @@ class Proposta
 	
 	public function verProposta(int $id): array|false
 	{
-		return $this->data->read("propostas", "WHERE id = $id")[0];
+		return $this->data->read("*", "propostas", "WHERE id = $id")[0];
 	}
 	
 	public function verPropostasEmFaseComercial(): array
 	{
-		$propostas = $this->data->read("propostas", "WHERE statusProposta = 'Em análise' OR statusProposta = 'Recusada' ORDER BY dataEnvioProposta DESC");
+		$propostas = $this->data->read("propostas.*, clientes.nome AS nomeCliente", "propostas", "JOIN clientes ON propostas.idCliente = clientes.id WHERE statusProposta = 'Em análise' OR statusProposta = 'Recusada' ORDER BY dataEnvioProposta DESC");
 		
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 		
@@ -45,7 +45,7 @@ class Proposta
 	
 	public function verPropostasEmFaseFinanceira(): array
 	{
-		$propostas = $this->data->read("propostas", "WHERE statusProposta = 'Aceita' ORDER BY dataAceiteProposta DESC;");
+		$propostas = $this->data->read("propostas.*, clientes.nome AS nomeCliente", "propostas", "JOIN clientes ON propostas.idCliente = clientes.id WHERE statusProposta = 'Aceita' ORDER BY dataAceiteProposta DESC;");
 		
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 
@@ -79,14 +79,13 @@ class Proposta
 
 	public function pesquisarProposta(): array
 	{
-		$propostas = $this->data->search("propostas", [
+		$propostas = $this->data->search("propostas.*, clientes.nome AS nomeCliente", "propostas", [
 			"numeroProposta",
-			"numeroNotaFiscal",
 			"statusPagamento",
 			"valor",
-			"cliente",
+	    		"idCliente",
 			"observacoes",
-		], $_GET["q"], "ORDER BY dataEnvioProposta DESC;");
+	    	], $_GET["q"], "JOIN clientes ON propostas.idCliente = clientes.id", "ORDER BY dataEnvioProposta DESC;");
 		
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 		

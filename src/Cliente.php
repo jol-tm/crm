@@ -16,12 +16,12 @@ class Cliente
 	
 	public function verCliente(int $id): array|false
 	{
-		return $this->data->read("clientes", "WHERE id = $id")[0];
+		return $this->data->read("*", "clientes", "WHERE id = $id")[0];
 	}
 	
 	public function verClientes(): array|false
 	{
-		$clientes = $this->data->read("clientes", "ORDER BY nome ASC");
+		$clientes = $this->data->read("*", "clientes", "ORDER BY nome ASC");
 		
 		foreach ($clientes as &$cliente)
 		{

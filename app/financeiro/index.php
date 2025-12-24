@@ -202,7 +202,7 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 				echo "
 				<tr>
 					<td>{$proposta['numeroProposta']}</td>
-					<td>" . htmlspecialchars($proposta['cliente']) . "</td>
+					<td>" . htmlspecialchars($proposta['nomeCliente']) . "</td>
 					<td>{$proposta['valor']}</td>
 					<td>{$proposta['dataEnvioProposta']}</td>
 					<td>{$proposta['dataAceiteProposta']}</td>

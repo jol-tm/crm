@@ -118,7 +118,7 @@ if (isset($_POST["excluirProposta"]))
 				echo "
 				<tr>
 					<td>{$proposta['numeroProposta']}</td>
-					<td>" . htmlspecialchars($proposta['cliente']) . "</td>
+					<td>" . htmlspecialchars($proposta['nomeCliente']) . "</td>
 					<td>{$proposta['valor']}</td>
 					<td>{$proposta['dataEnvioProposta']}</td>
 					<td>{$proposta['diasEmAnalise']}</td>

@@ -38,11 +38,11 @@ class DataRepository
 		}
 	}
 
-	public function read(string $table, ?string $parameters = null): ?array
+	public function read(string $columns = "*", string $table, ?string $parameters = null): ?array
 	{
 		try
 		{
-			$sql = "SELECT * FROM $table $parameters";
+			$sql = "SELECT $columns FROM $table $parameters";
 
 			$data = $this->connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
@@ -55,7 +55,7 @@ class DataRepository
 		}
 	}
 	
-	public function readJoin(string $table, string $columns, ?string $parameters = null): ?array
+	/*public function readJoin(string $table, string $columns, ?string $parameters = null): ?array
 	{
 		try
 		{
@@ -70,22 +70,22 @@ class DataRepository
 			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
 			return null;
 		}
-	}
+	}*/
 
-	public function search(string $table, array $columns, string $keyWord, ?string $parameters = null): ?array
+	public function search(string $selectColumns = "*", string $table, array $searchColumns, string $keyWord, ?string $joinParameters = null, ?string $whereParameters = null): ?array
 	{
 		try
 		{
 			$likeClauses = [];
 
-			foreach ($columns as $column)
+			foreach ($searchColumns as $column)
 			{
 				$likeClauses[] = "$column LIKE :keyWord";
 			}
 
 			$whereClause = implode(" OR ", $likeClauses);
 
-			$sql = "SELECT * FROM $table WHERE $whereClause $parameters";
+			$sql = "SELECT $selectColumns FROM $table $joinParameters WHERE $whereClause $whereParameters";
 
 			$stmt = $this->connection->prepare($sql);
 			$stmt->bindValue(":keyWord", "%$keyWord%", PDO::PARAM_STR);
