@@ -125,7 +125,7 @@ class Proposta
 			"numeroProposta" => empty($_POST["numeroProposta"]) ? null : $_POST["numeroProposta"],
 			"dataEnvioProposta" => $_POST["dataEnvioProposta"],
 			"valor" => str_replace(",", ".", $_POST["valor"]),
-			"cliente" => $_POST["cliente"],
+			"idCliente" => $_POST["cliente"],
 			"observacoes" => $_POST["observacoes"],
 		]);
 		

@@ -14,7 +14,7 @@ if (!$accessAllowed)
         unlink($file);
     }
     
-   	echo "O acesso ao sistema foi temporariamente bloqueado. Contate o administrador ou tente novamente mais tarde.";
+   	echo "O acesso ao sistema foi bloqueado temporariamente. Contate o administrador ou tente novamente mais tarde.";
     exit();   
 }
 
@@ -71,8 +71,8 @@ if (isset($_GET["desconectar"]))
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>BMS | <?= $pageTitle; ?></title>
 	<link rel="icon" href="<?= $baseAssetsPath . "logo.svg"; ?>" type="image/svg+xml">
-	<link rel="stylesheet" href="<?= $baseAssetsPath . "style.css?v4.4"; ?>">
-	<script defer src="<?= $baseAssetsPath . "script.js?v3"; ?>"></script>
+	<link rel="stylesheet" href="<?= $baseAssetsPath . "style.css?v5"; ?>">
+	<script defer src="<?= $baseAssetsPath . "script.js?v5"; ?>"></script>
 </head>
 
 <body>

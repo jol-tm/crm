@@ -7,7 +7,7 @@ require_once "../../src/Cliente.php";
 
 $cliente = new Cliente();
 
-if (isset($_POST["registerClientBtn"]))
+if (isset($_POST["botaoCadastrarCliente"]))
 {
 	$cliente->cadastrarCliente();
 }
@@ -44,8 +44,8 @@ if (isset($_POST["mostrarAtualizarCliente"]))
 		<input type='text' name='telefone' id='telefone' placeholder='' maxlength='15' value='{$clienteParaAtualizar['telefone']}'>
 		<label for='endereco'>Endereço</label>
 		<input type='text' name='endereco' id='endereco' placeholder='' maxlength='255' value='{$clienteParaAtualizar['endereco']}'>
-		<button id='updateClientBtn' type='submit' name='atualizarCliente'>Atualizar</button>
-		<a id='cancelUpdateClientBtn' href=''>Cancelar</a>
+		<button id='botaoAtualizarCliente' type='submit' name='atualizarCliente'>Atualizar</button>
+		<a id='botaoCancelarAtualizarCliente' href=''>Cancelar</a>
 	</form>
 	</div>
 	";
@@ -53,10 +53,10 @@ if (isset($_POST["mostrarAtualizarCliente"]))
 
 ?>
 
-	<button id="showRegisterClientFormBtn">Cadastrar cliente</button>
+	<button id="botaoMostrarCadastrarCliente">Cadastrar cliente</button>
 </header>
 
-<div id="registerClientForm" class="formWrapper">
+<div id="formCadastrarCliente" class="containerForm">
 	<form action="" method="post" class="customForm">
 		<h2>Cadastrar Cliente</h2>
 		<label for="nome">Nome</label>
@@ -73,8 +73,8 @@ if (isset($_POST["mostrarAtualizarCliente"]))
 		<input type="text" name="telefone" id="telefone" placeholder="" maxlength="15">
 		<label for="endereco">Endereço</label>
 		<input type="text" name="endereco" id="endereco" placeholder="" maxlength="255">
-		<button id="registerClientBtn" type="submit" name="registerClientBtn">Cadastrar</button>
-		<button id="cancelRegisterClientBtn" type="button">Cancelar</button>
+		<button id="botaoCadastrarCliente" type="submit" name="botaoCadastrarCliente">Cadastrar</button>
+		<button id="botaoCancelarCadastrarCliente" type="button">Cancelar</button>
 	</form>
 </div>
 
@@ -112,7 +112,7 @@ if (isset($_POST["mostrarAtualizarCliente"]))
 				<td>
 					<form action='' method='post'>
 						<input type='hidden' name='id' value='{$cliente['id']}'>
-						<button class='updateClientBtn' type='submit' name='mostrarAtualizarCliente'>
+						<button class='botaoAtualizarCliente' type='submit' name='mostrarAtualizarCliente'>
 							<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-edit-3'><path d='M12 20h9'></path><path d='M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'></path></svg>
 						</button>
 					</form>
@@ -120,7 +120,7 @@ if (isset($_POST["mostrarAtualizarCliente"]))
 				<td>
 					<form action='' method='post'>
 						<input type='hidden' name='id' value='{$cliente['id']}'>
-						<button class='deleteClientBtn' type='submit' name='excluirCliente' onclick=\"return prompt('ATENÇÃO! EXCLUSÃO É PERMANENTE! Digite EXCLUIR para confirmar.') === 'EXCLUIR'\">
+						<button class='botaoExcluirCliente' type='submit' name='excluirCliente' onclick=\"return prompt('ATENÇÃO! EXCLUSÃO É PERMANENTE! Digite EXCLUIR para confirmar.') === 'EXCLUIR'\">
 							<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash-2'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path><line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line></svg>
 						</button>
 					</form>

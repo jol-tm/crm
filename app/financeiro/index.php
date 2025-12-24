@@ -49,7 +49,7 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 	}
 
 	echo "
-	<div class='formWrapper'>
+	<div class='containerForm'>
 	<form action='' method='post' class='customForm'>
 		<input type='hidden' name='id' value='{$propostaParaAtualizar['id']}'>
 		<input type='hidden' name='dataAceiteProposta' value='{$_POST['dataAceiteProposta']}'>
@@ -67,8 +67,8 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 		<input type='text' name='formaPagamento' id='formaPagamento' placeholder='Ex: Parcelado 2x' maxlength='255' value='{$propostaParaAtualizar['formaPagamento']}'>
 		<label for='observacoes'>Observações</label>
 		<input type='text' name='observacoes' id='observacoes' placeholder='Ex: Desenvolvimento...' maxlength='255' value='{$propostaParaAtualizar['observacoes']}'>
-		<button id='updateStatusBtn' type='submit' name='atualizarStatusProposta'>Atualizar</button>
-		<a id='cancelUpdateStatusBtn' href=''>Cancelar</a>
+		<button id='botaoAtualizarStatusProposta' type='submit' name='atualizarStatusProposta'>Atualizar</button>
+		<a id='botaoCancelarAtualizarStatusProposta' href=''>Cancelar</a>
 	</form>
 	</div>
 	";
@@ -76,9 +76,9 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 
 ?>
 	
-	<form id="searchBox" action="" method="get">
+	<form id="caixaPesquisa" action="" method="get">
 		<input type="text" name="q" value="<?= $pesquisa; ?>" placeholder="Ex: Aguardando">
-		<button id="searchBtn" type="submit" name="">
+		<button id="botaoPesquisa" type="submit" name="">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
 		</button>
 	</form>
@@ -102,7 +102,7 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 				<th>Observações</th>
 				<th>Atualizar status</th>
 				<th>Voltar para em análise</th>
-				<th>Apagar</th>
+				<th>Excluir</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -151,28 +151,28 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 				
 				if ($proposta["statusPagamento"] === "Aguardando")
 				{
-					$statusPagamento = "pending";
+					$statusPagamento = "aguardando";
 				}
 				elseif ($proposta["statusPagamento"] === "Recebido")
 				{
-					$statusPagamento = "received";
+					$statusPagamento = "recebido";
 				}
 				elseif ($proposta["statusPagamento"] === "Recusada")
 				{
-					$statusPagamento = "refused";
+					$statusPagamento = "recusada";
 				}
 				
 				if ($proposta["statusProposta"] === "Recusada")
 				{
-					$statusProposta = "refused";
+					$statusProposta = "recusada";
 				}
 				elseif ($proposta["statusProposta"] === "Aceita")
 				{
-					$statusProposta = "accepted";
+					$statusProposta = "aceita";
 				}
 				else
 				{
-					$statusProposta = "pending";
+					$statusProposta = "emAnalise";
 				}
 
 				if ($proposta['statusProposta'] === 'Aceita' && $proposta['statusPagamento'] === 'Aguardando')
@@ -180,7 +180,7 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 					$voltarEmAnalise = "
 						<form action='' method='post'>
 							<input type='hidden' name='id' value='{$proposta['id']}'>
-							<button class='backPendingBtn' type='submit' name='voltarEmAnalise' onclick=\"return confirm('Voltar para em análise fará com que as contagens de dias sejam redefinidas. Prosseguir?')\">
+							<button class='botaoVoltarEmAnalise' type='submit' name='voltarEmAnalise' onclick=\"return confirm('Voltar para em análise fará com que as contagens de dias sejam redefinidas. Prosseguir?')\">
 							    <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-corner-up-left'><polyline points='9 14 4 9 9 4'></polyline><path d='M20 20v-7a4 4 0 0 0-4-4H4'></path></svg>
 							</button>
 						</form>";
@@ -208,7 +208,7 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 					   <form action='' method='post'>
 							<input type='hidden' name='id' value='{$proposta['id']}'>
 							<input type='hidden' name='dataAceiteProposta' value='{$proposta['dataAceiteProposta']}'>
-							<button class='updateProposalBtn' type='submit' name='mostrarAtualizarStatus'>
+							<button class='botaoMostrarAtualizarStatus' type='submit' name='mostrarAtualizarStatus'>
 							    <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-edit-3'><path d='M12 20h9'></path><path d='M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'></path></svg>
 							</button>
 				       </form>
@@ -219,7 +219,7 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 					<td>
 					   <form action='' method='post'>
 							<input type='hidden' name='id' value='{$proposta['id']}'>
-							<button class='deleteProposalBtn' type='submit' name='excluirProposta' onclick=\"return prompt('ATENÇÃO! EXCLUSÃO É PERMANENTE! Digite EXCLUIR para confirmar.') === 'EXCLUIR'\">
+							<button class='botaoExcluirProposta' type='submit' name='excluirProposta' onclick=\"return prompt('ATENÇÃO! EXCLUSÃO É PERMANENTE! Digite EXCLUIR para confirmar.') === 'EXCLUIR'\">
 							    <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash-2'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path><line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line></svg>
 							</button>
 					   </form>

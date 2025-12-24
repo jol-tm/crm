@@ -56,7 +56,7 @@ nav {
 
 @media (max-width: 850px) {
 	  nav {
-        bottom: 0.5rem;
+        bottom: 1rem;
         background-color: var(--primaryColorTransparent);
 	  }
 }
@@ -103,7 +103,7 @@ form {
 	  border: 2px solid var(--primaryColor);
 }
 
-.formWrapper {
+.containerForm {
 	  display: flex;
 	  z-index: 2;
 	  position: fixed;
@@ -205,7 +205,7 @@ th, td {
     background-color: var(--destructiveColor);
 }
 
-/* LOGIN page*/
+/* LOGIN */
 
 #bodyLogin {
     justify-content: center;
@@ -216,17 +216,16 @@ th, td {
 	  width: 15rem;
 }
 
-/* 1:1 BUTTONS */
+/* BOTOES 1:1 */
 
-.aproveProposalBtn,
-.denyProposalBtn,
-.deleteProposalBtn,
-.deleteClientBtn,
-.updateProposalBtn,
-.updateClientBtn,
-.backPendingBtn,
-.tableNavBtn,
-#searchBtn {
+.botaoAceitarProposta,
+.botaoRecusarProposta,
+.botaoExcluirProposta,
+.botaoExcluirCliente,
+.botaoMostrarAtualizarStatus,
+.botaoAtualizarCliente,
+.botaoVoltarEmAnalise,
+#botaoPesquisa {
 	  font-size: 1.5rem;
 	  font-weight: normal;
 	  width: 2.5rem;
@@ -235,14 +234,14 @@ th, td {
 	  margin: auto;
 }
 
-/* CLIENTS */
+/* CLIENTES */
 
-#cancelRegisterClientBtn,
-.deleteClientBtn {
+#botaoCancelarCadastrarCliente,
+.botaoExcluirCliente {
     background-color: var(--destructiveColor);
 }
 
-#cancelUpdateClientBtn {
+#botaoCancelarAtualizarCliente {
     text-align: center;
     text-decoration: none;
     padding: 0.625rem;
@@ -253,32 +252,32 @@ th, td {
 
 /* COMERCIAL */
 
-.denyProposalBtn,
-.deleteProposalBtn,
-#cancelRegisterProposalBtn {
+.botaoRecusarProposta,
+.botaoExcluirProposta,
+#botaoCancelarCadastrarProposta {
 	  background-color: var(--destructiveColor);
 }
 
-.backPendingBtn {
+.botaoVoltarEmAnalise {
 	  background-color: var(--warnColor);
 }
 
-#registerProposalForm, #registerClientForm {
+#formCadastrarProposta, #formCadastrarCliente {
 	  display: none;
 }
 
-/* FINANCES */
+/* FINANCEIRO */
 
-#searchBox {
+#caixaPesquisa {
 	  padding: 0;
 	  flex-direction: row;
 }
 
-#updateStatusBtn {
+#botaoAtualizarStatusProposta {
 	  color: var(--lightColor);
 }
 
-#cancelUpdateStatusBtn {
+#botaoCancelarAtualizarStatusProposta {
 	  text-align: center;
 	  text-decoration: none;
 	  padding: 0.625rem;
@@ -287,28 +286,30 @@ th, td {
 	  background-color: var(--destructiveColor);
 }
 
-/* PROPOSALS WARNING STATUS */
+/* STATUS PROPOSTA */
 
-.received,
-.accepted,
-.refused,
-.pending {
+.recebido,
+.aceita,
+.recusada,
+.emAnalise,
+.aguardando {
     color: var(--lightColor);
     padding: 0.5rem;
     border-radius: 0.5rem;
     text-wrap: nowrap;
 }
 
-.received,
-.accepted {
+.recebido,
+.aceita {
     background-color: var(--confirmColor);
 }
 
-.refused {
+.recusada {
     background-color: var(--destructiveColor);
 }
 
-.pending {
+.emAnalise,
+.aguardando {
     background-color: var(--warnColor);
 }
 

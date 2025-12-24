@@ -1,13 +1,13 @@
-const showRegisterProposalFormBtn = document.querySelector("#showRegisterProposalFormBtn");
-const showRegisterClientFormBtn = document.querySelector("#showRegisterClientFormBtn");
-const cancelRegisterProposalBtn = document.querySelector("#cancelRegisterProposalBtn");
-const cancelRegisterClientBtn = document.querySelector("#cancelRegisterClientBtn");
-const formWrapper = document.querySelector(".formWrapper");
+const botaoMostrarCadastrarProposta = document.querySelector("#botaoMostrarCadastrarProposta");
+const botaoMostrarCadastrarCliente = document.querySelector("#botaoMostrarCadastrarCliente");
+const botaoCancelarCadastrarProposta = document.querySelector("#botaoCancelarCadastrarProposta");
+const botaoCancelarCadastrarCliente = document.querySelector("#botaoCancelarCadastrarCliente");
+const containerForm = document.querySelector(".containerForm");
 
-showRegisterProposalFormBtn !== null ? showRegisterProposalFormBtn.addEventListener("click", () => showModal(formWrapper)) : null;
-showRegisterClientFormBtn !== null ? showRegisterClientFormBtn.addEventListener("click", () => showModal(formWrapper)) : null;
-cancelRegisterProposalBtn !== null ? cancelRegisterProposalBtn.addEventListener("click", () => hideModal(formWrapper)) : null;
-cancelRegisterClientBtn !== null ? cancelRegisterClientBtn.addEventListener("click", () => hideModal(formWrapper)) : null;
+botaoMostrarCadastrarProposta !== null ? botaoMostrarCadastrarProposta.addEventListener("click", () => showModal(containerForm)) : null;
+botaoMostrarCadastrarCliente !== null ? botaoMostrarCadastrarCliente.addEventListener("click", () => showModal(containerForm)) : null;
+botaoCancelarCadastrarProposta !== null ? botaoCancelarCadastrarProposta.addEventListener("click", () => hideModal(containerForm)) : null;
+botaoCancelarCadastrarCliente !== null ? botaoCancelarCadastrarCliente.addEventListener("click", () => hideModal(containerForm)) : null;
 
 function showModal(modal)
 {

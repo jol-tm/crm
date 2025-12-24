@@ -38,7 +38,7 @@ if (isset($_POST["acessar"]) && !empty($_POST["email"]) && !empty($_POST["senha"
 		<h1>Acesso</h1>
 		<input type="email" name="email" placeholder="Email" required>
 		<input type="password" name="senha" placeholder="Senha" required>
-		<button id="loginBtn" type="submit" name="acessar">Acessar</button>
+		<button id="botaoLogin" type="submit" name="acessar">Acessar</button>
 	</form>
 </body>
 
