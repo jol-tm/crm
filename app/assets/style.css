@@ -25,20 +25,6 @@
 	  src: url('FunnelSans.ttf');
 }
 
-::-webkit-scrollbar {
-    width: 0.25rem;
-    height: 0.25rem;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--primaryColorTransparent);
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--confirmColor);
-    border-radius: 0.5rem;
-}
-
 body {
 	  font-family: var(--primaryFont), sans-serif;
 	  display: flex;
@@ -85,6 +71,7 @@ input,
 button,
 svg,
 nav,
+select,
 .notification {
 	  font-family: var(--primaryFont), sans-serif;
 	  font-size: 1rem;
@@ -110,14 +97,35 @@ form {
 	  border-radius: 1rem;
 }
 
+.customForm {
+	  margin: 0.5rem;
+	  background-color: var(--lightColor);
+	  border: 2px solid var(--primaryColor);
+}
+
+.formWrapper {
+	  display: flex;
+	  z-index: 2;
+	  position: fixed;
+	  top: 0;
+	  align-items: start;
+	  justify-content: center;
+	  height: 100vh;
+	  width: 100vw;
+	  overflow: auto;
+	  backdrop-filter: blur(2px);
+	  animation: showUp var(--transitionsDuration) ease;
+}
+
 label {
 	  font-weight: bold;
 }
 
-input {
+input, select {
 	  box-sizing: border-box;
 	  width: 100%;
 	  border: 2px solid var(--primaryColor);
+	  background-color: var(--lightColor);
 }
 
 button {
@@ -179,26 +187,6 @@ th, td {
 	  color: var(--lightColor);
 	  padding: 0 0.25rem;
 	  border-radius: 0.25rem;
-}
-
-.customForm {
-	  margin: 0.5rem;
-	  background-color: var(--lightColor);
-	  border: 2px solid var(--primaryColor);
-}
-
-.formWrapper {
-	  display: flex;
-	  z-index: 2;
-	  position: fixed;
-	  top: 0;
-	  align-items: start;
-	  justify-content: center;
-	  height: 100vh;
-	  width: 100vw;
-	  overflow: auto;
-	  backdrop-filter: blur(2px);
-	  animation: showUp var(--transitionsDuration) ease;
 }
 
 .notification {

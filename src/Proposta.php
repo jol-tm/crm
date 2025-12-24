@@ -14,12 +14,12 @@ class Proposta
 		$this->data = new DataRepository($this->connection->start());
 	}
 	
-	public function verProposta(int $id): array|false
+	public function verProposta(int $id): ?array
 	{
 		return $this->data->read("*", "propostas", "WHERE id = $id")[0];
 	}
 	
-	public function verPropostasEmFaseComercial(): array
+	public function verPropostasEmFaseComercial(): ?array
 	{
 		$propostas = $this->data->read("propostas.*, clientes.nome AS nomeCliente", "propostas", "JOIN clientes ON propostas.idCliente = clientes.id WHERE statusProposta = 'Em análise' OR statusProposta = 'Recusada' ORDER BY dataEnvioProposta DESC");
 		
@@ -43,7 +43,7 @@ class Proposta
 		return $propostas;
 	}
 	
-	public function verPropostasEmFaseFinanceira(): array
+	public function verPropostasEmFaseFinanceira(): ?array
 	{
 		$propostas = $this->data->read("propostas.*, clientes.nome AS nomeCliente", "propostas", "JOIN clientes ON propostas.idCliente = clientes.id WHERE statusProposta = 'Aceita' ORDER BY dataAceiteProposta DESC;");
 		
@@ -77,7 +77,7 @@ class Proposta
 		return $propostas;
 	}
 
-	public function pesquisarProposta(): array
+	public function pesquisarProposta(): ?array
 	{
 		$propostas = $this->data->search("propostas.*, clientes.nome AS nomeCliente", "propostas", [
 			"numeroProposta",
@@ -167,7 +167,7 @@ class Proposta
 
 		$update = $this->data->update("propostas", [
 				"numeroProposta" => empty($_POST["numeroProposta"]) ? null : $_POST["numeroProposta"],
-				"cliente" => $_POST["cliente"],
+				"idCliente" => $_POST["cliente"],
 				"valor" => str_replace(",", ".", $_POST["valor"]),
 				"dataPagamento" => empty($_POST["dataPagamento"]) ? null : $_POST["dataPagamento"],
 				"statusPagamento" => empty($_POST["dataPagamento"]) ? "Aguardando" : "Recebido",

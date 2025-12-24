@@ -114,7 +114,7 @@ class Cliente
 		}
 		
 		$_SESSION["notification"] = [
-			"message" => "Erro ao excluir cliente. Nada modificado.",
+			"message" => "Erro ao excluir cliente. Nada modificado. Cód: {$delete['errorCode']}",
 			"status" => "failure"			
 		];
 		header("Location: ./");

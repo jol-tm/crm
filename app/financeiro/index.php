@@ -36,7 +36,17 @@ if (isset($_POST["atualizarStatusProposta"]))
 
 if (isset($_POST["mostrarAtualizarStatus"]))
 {
+	require_once "../../src/Cliente.php";
+	
 	$propostaParaAtualizar = $proposta->verProposta($_POST["id"]);
+	$clientes = (new Cliente())->verClientes();
+	$selectClientes = "";
+	
+	foreach ($clientes as $cliente)
+	{
+		$selected = $propostaParaAtualizar['idCliente'] === $cliente['id'] ? "selected" : null; 
+		$selectClientes .= "<option $selected value={$cliente['id']}>{$cliente['nome']}</option>";
+	}
 
 	echo "
 	<div class='formWrapper'>
@@ -46,25 +56,15 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 		<label for='numeroProposta'>N° da Proposta</label>
 		<input type='number' name='numeroProposta' id='numeroProposta' placeholder='Ex: 12325 ou 0 para nulo' min='0' value='{$propostaParaAtualizar['numeroProposta']}'>
 		<label for='cliente'>Cliente</label>
-		<input type='text' name='cliente' id='cliente' placeholder='Nome do Cliente' maxlength='255' value='{$propostaParaAtualizar['cliente']}'>
-		<!--
-		<label for='dataEnvioRelatorio'>Data de Envio do Relatorio</label>
-		<input type='date' name='dataEnvioRelatorio' id='dataEnvioRelatorio' value='{$propostaParaAtualizar['dataEnvioRelatorio']}'>
-		-->
+		<select name='cliente' id='cliente'>
+			$selectClientes
+		</select>
 		<label for='valor'>Valor da Proposta</label>
 		<input type='number' step='0.01' name='valor' id='valor' placeholder='Ex: 999,99' min='0' value='{$propostaParaAtualizar['valor']}'>
-		<!--
-		<label for='numeroNotaFiscal'>NF</label>
-		<input type='number' name='numeroNotaFiscal' id='numeroNotaFiscal' placeholder='Ex: 123456789' value='{$propostaParaAtualizar['numeroNotaFiscal']}'>
-		-->
 		<label for='dataPagamento'>Data do Pagamento</label>
 		<input type='date' name='dataPagamento' id='dataPagamento' value='{$propostaParaAtualizar['dataPagamento']}'>
 		<label for='formaPagamento'>Forma de Pagamento</label>
 		<input type='text' name='formaPagamento' id='formaPagamento' placeholder='Ex: Parcelado 2x' maxlength='255' value='{$propostaParaAtualizar['formaPagamento']}'>
-		<!--
-		<label for='dataUltimaCobranca'>Data Última Cobrança</label>
-		<input type='date' name='dataUltimaCobranca' id='dataUltimaCobranca' value='{$propostaParaAtualizar['dataUltimaCobranca']}'>
-		-->
 		<label for='observacoes'>Observações</label>
 		<input type='text' name='observacoes' id='observacoes' placeholder='Ex: Desenvolvimento...' maxlength='255' value='{$propostaParaAtualizar['observacoes']}'>
 		<button id='updateStatusBtn' type='submit' name='atualizarStatusProposta'>Atualizar</button>
@@ -95,19 +95,10 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 				<th>Data aceite proposta</th>
 				<th>Dias em análise</th>
 				<th>Status proposta</th>
-<!--
-				<th>N° relatório</th>
-				<th>Data envio relatório</th>
-				<th>NF</th>
--->
 				<th>Data pagamento</th>
 				<th>Forma pagamento</th>
 				<th>Status pagamento</th>
 				<th>Dias aguardando pagamento</th>
-<!--
-				<th>Data última cobrança</th>
-				<th>Dias desde última cobrança</th>
--->
 				<th>Observações</th>
 				<th>Atualizar status</th>
 				<th>Voltar para em análise</th>
