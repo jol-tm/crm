@@ -21,7 +21,11 @@ class Proposta
 	
 	public function verPropostasEmFaseComercial(): ?array
 	{
-		$propostas = $this->data->read("propostas.*, clientes.nome AS nomeCliente", "propostas", "JOIN clientes ON propostas.idCliente = clientes.id WHERE statusProposta = 'Em análise' OR statusProposta = 'Recusada' ORDER BY dataEnvioProposta DESC");
+		$propostas = $this->data->read(
+			"propostas.*, clientes.nome AS nomeCliente", 
+			"propostas", 
+			"JOIN clientes ON propostas.idCliente = clientes.id WHERE statusProposta = 'Em análise' OR statusProposta = 'Recusada' ORDER BY dataEnvioProposta DESC"
+		);
 		
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 		
@@ -45,7 +49,11 @@ class Proposta
 	
 	public function verPropostasEmFaseFinanceira(): ?array
 	{
-		$propostas = $this->data->read("propostas.*, clientes.nome AS nomeCliente", "propostas", "JOIN clientes ON propostas.idCliente = clientes.id WHERE statusProposta = 'Aceita' ORDER BY dataAceiteProposta DESC;");
+		$propostas = $this->data->read(
+			"propostas.*, clientes.nome AS nomeCliente", 
+			"propostas", 
+			"JOIN clientes ON propostas.idCliente = clientes.id WHERE statusProposta = 'Aceita' ORDER BY dataAceiteProposta DESC;"
+		);
 		
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 
@@ -79,13 +87,19 @@ class Proposta
 
 	public function pesquisarProposta(): ?array
 	{
-		$propostas = $this->data->search("propostas.*, clientes.nome AS nomeCliente", "propostas", [
-			"numeroProposta",
-			"statusPagamento",
-			"valor",
-	    		"idCliente",
-			"observacoes",
-	    	], $_GET["q"], "JOIN clientes ON propostas.idCliente = clientes.id", "ORDER BY dataEnvioProposta DESC;");
+		$propostas = $this->data->search(
+			"propostas.*, clientes.nome AS nomeCliente", 
+			"propostas", [
+				"numeroProposta",
+				"statusPagamento",
+				"valor",
+				"idCliente",
+				"observacoes",
+	    	], 
+	    	$_GET["q"], 
+	    	"JOIN clientes ON propostas.idCliente = clientes.id", 
+	    	"ORDER BY dataEnvioProposta DESC;"
+    	);
 		
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 		
@@ -121,13 +135,15 @@ class Proposta
 
 	public function cadastrarProposta(): bool
 	{
-		$create = $this->data->create("propostas", [
-			"numeroProposta" => empty($_POST["numeroProposta"]) ? null : $_POST["numeroProposta"],
-			"dataEnvioProposta" => $_POST["dataEnvioProposta"],
-			"valor" => str_replace(",", ".", $_POST["valor"]),
-			"idCliente" => $_POST["cliente"],
-			"observacoes" => $_POST["observacoes"],
-		]);
+		$create = $this->data->create(
+			"propostas", [
+				"numeroProposta" => empty($_POST["numeroProposta"]) ? null : $_POST["numeroProposta"],
+				"dataEnvioProposta" => $_POST["dataEnvioProposta"],
+				"valor" => str_replace(",", ".", $_POST["valor"]),
+				"idCliente" => $_POST["cliente"],
+				"observacoes" => $_POST["observacoes"],
+			]
+		);
 		
 		if ($create["success"] === true)
 		{
@@ -165,7 +181,8 @@ class Proposta
 			$_POST["diasAguardandoPagamento"] = (($dataPagamento->setTime(0, 0, 0))->diff($dataAceiteProposta->setTime(0, 0, 0)))->days;
 		}		
 
-		$update = $this->data->update("propostas", [
+		$update = $this->data->update(
+			"propostas", [
 				"numeroProposta" => empty($_POST["numeroProposta"]) ? null : $_POST["numeroProposta"],
 				"idCliente" => $_POST["cliente"],
 				"valor" => str_replace(",", ".", $_POST["valor"]),
@@ -174,7 +191,7 @@ class Proposta
 				"formaPagamento" => $_POST["formaPagamento"],
 				"observacoes" => $_POST["observacoes"],
 				"diasAguardandoPagamento" => $_POST["diasAguardandoPagamento"],
-			],
+			], 
 			[
 				"id" => $_POST["id"]
 			]
@@ -203,7 +220,8 @@ class Proposta
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 		$diasEmAnalise = ($hoje->diff((DateTime::createFromFormat("d/m/Y", $_POST["dataEnvioProposta"]))->setTime(0, 0, 0)))->days;
 
-		$update = $this->data->update("propostas", [
+		$update = $this->data->update(
+			"propostas", [
 				"statusProposta" => "Aceita",
 				"statusPagamento" => "Aguardando", // Para caso ela tenha sido recusada e depois aceita
 				"dataAceiteProposta" => $hoje->format("Y-m-d"), 
@@ -211,7 +229,8 @@ class Proposta
 			], 
 			[
 				"id" => $_POST["id"]
-			]);
+			]
+		);
 
 		if ($update["affectedRows"] > 0)
 		{
@@ -233,12 +252,14 @@ class Proposta
 
 	public function voltarEmAnalise(): bool
 	{
-		$update = $this->data->update("propostas", [
-			"statusProposta" => "Em análise",
-		], 
-		[
-			"id" => $_POST["id"]
-		]);
+		$update = $this->data->update(
+			"propostas", [
+				"statusProposta" => "Em análise",
+			], 
+			[
+				"id" => $_POST["id"]
+			]
+		);
 
 		if ($update["affectedRows"] > 0)
 		{
@@ -263,14 +284,16 @@ class Proposta
 		$hoje = (new DateTime())->setTime(0, 0, 0);
 		$diasEmAnalise = ($hoje->diff((DateTime::createFromFormat("d/m/Y", $_POST["dataEnvioProposta"]))->setTime(0, 0, 0)))->days;
 		
-		$update = $this->data->update("propostas", [
-			"statusProposta" => "Recusada",
-			"statusPagamento" => "Recusada",
-			"diasEmAnalise" => $diasEmAnalise
-		], 
-		[
-			"id" => $_POST["id"]
-		]);
+		$update = $this->data->update(
+			"propostas", [
+				"statusProposta" => "Recusada",
+				"statusPagamento" => "Recusada",
+				"diasEmAnalise" => $diasEmAnalise
+			], 
+			[
+				"id" => $_POST["id"]
+			]
+		);
 
 		if ($update["affectedRows"] > 0)
 		{

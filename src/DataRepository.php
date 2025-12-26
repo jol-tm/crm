@@ -54,23 +54,6 @@ class DataRepository
 			return null;
 		}
 	}
-	
-	/*public function readJoin(string $table, string $columns, ?string $parameters = null): ?array
-	{
-		try
-		{
-			$sql = "SELECT $columns FROM $table JOIN $parameters";
-
-			$data = $this->connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-
-			return $data;
-		}
-		catch (PDOException $e)
-		{
-			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return null;
-		}
-	}*/
 
 	public function search(string $selectColumns = "*", string $table, array $searchColumns, string $keyWord, ?string $joinParameters = null, ?string $whereParameters = null): ?array
 	{
