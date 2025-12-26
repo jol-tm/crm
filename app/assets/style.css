@@ -176,12 +176,6 @@ th, td {
     scroll-behavior: smooth;
 }
 
-#authenticatedUser {
-    a {
-        color: var(--destructiveColor);
-    }
-}
-
 #currentPage {
 	  background-color: var(--confirmColor);
 	  color: var(--lightColor);
@@ -205,6 +199,14 @@ th, td {
     background-color: var(--destructiveColor);
 }
 
+#formSair {
+    padding: 0;
+}
+
+#botaoSair {
+    background-color: var(--destructiveColor);
+}
+
 /* LOGIN */
 
 #bodyLogin {
@@ -225,13 +227,14 @@ th, td {
 .botaoMostrarAtualizarStatus,
 .botaoAtualizarCliente,
 .botaoVoltarEmAnalise,
-#botaoPesquisa {
-	  font-size: 1.5rem;
+#botaoPesquisa,
+#botaoSair {
+    align-self: center;
+    font-size: 1.5rem;
 	  font-weight: normal;
 	  width: 2.5rem;
 	  height: 2.5rem;
 	  padding: 0;
-	  margin: auto;
 }
 
 /* CLIENTES */

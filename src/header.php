@@ -14,7 +14,7 @@ if (!$accessAllowed)
         unlink($file);
     }
     
-   	echo "O acesso ao sistema foi bloqueado temporariamente. Contate o administrador ou tente novamente mais tarde.";
+   	echo "O acesso ao sistema foi bloqueado temporariamente. Tente novamente mais tarde ou contate o administrador.";
     exit();   
 }
 
@@ -41,10 +41,9 @@ if (isset($_SESSION["authenticatedUser"]) && ($pageTitle === "Acesso"))
 	exit();
 }
 
-if (isset($_GET["desconectar"]))
+if (isset($_POST["sair"]))
 {
 	require_once "../../src/User.php";
-
 	$user = new User();
 
 	if ($user->disconnect())
@@ -103,9 +102,11 @@ if ($pageTitle !== "Acesso")
 		<a id='$financeiroId' href='../financeiro/'>Financeiro</a>
 	</nav>
 	<header>
-		<h5 id='authenticatedUser'>
-			{$_SESSION['authenticatedUser']} | <a href='./?desconectar'>Sair</a>
-		</h5>
+		<form id='formSair' action='' method='post'> 
+			<button id='botaoSair' name='sair' type='submit'>
+				<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-log-out'><path d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'></path><polyline points='16 17 21 12 16 7'></polyline><line x1='21' y1='12' x2='9' y2='12'></line></svg>
+			</button>
+		</form>
 	";
 }
 
