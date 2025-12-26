@@ -1,50 +1,47 @@
 <?php
 
-$pageTitle = "Financeiro";
+$pageTitle = 'Financeiro';
 
-require_once "../../src/header.php";
-require_once "../../src/Proposta.php";
+require_once '../../src/header.php';
+require_once '../../src/Proposta.php';
+require_once '../../src/Cliente.php';
 
 $proposta = new Proposta();
 $propostas = [];
-$pesquisa = "";
+$clientes = (new Cliente())->verClientes();
 
-if (!empty($_GET["q"]))
+if (!empty($_GET['q']) || !empty($_GET['c']))
 {
 	$propostas = $proposta->pesquisarProposta();
-	$pesquisa = $_GET["q"];
 }
 else
 {
 	$propostas = $proposta->verPropostasEmFaseFinanceira();
 }
 
-if (isset($_POST["excluirProposta"]))
+if (isset($_POST['excluirProposta']))
 {
 	$proposta->excluirProposta();
 }
 
-if (isset($_POST["voltarEmAnalise"]))
+if (isset($_POST['voltarEmAnalise']))
 {
 	$proposta->voltarEmAnalise();
 }
 
-if (isset($_POST["atualizarStatusProposta"]))
+if (isset($_POST['atualizarStatusProposta']))
 {
 	$proposta->atualizarStatusProposta();
 }
 
-if (isset($_POST["mostrarAtualizarStatus"]))
-{
-	require_once "../../src/Cliente.php";
-	
-	$propostaParaAtualizar = $proposta->verProposta($_POST["id"]);
-	$clientes = (new Cliente())->verClientes();
-	$selectClientes = "";
+if (isset($_POST['mostrarAtualizarStatus']))
+{	
+	$propostaParaAtualizar = $proposta->verProposta($_POST['id']);
+	$selectClientes = '';
 	
 	foreach ($clientes as $cliente)
 	{
-		$selected = $propostaParaAtualizar['idCliente'] === $cliente['id'] ? "selected" : null; 
+		$selected = $propostaParaAtualizar['idCliente'] === $cliente['id'] ? 'selected' : null; 
 		$selectClientes .= "<option $selected value={$cliente['id']}>{$cliente['nome']}</option>";
 	}
 
@@ -73,18 +70,36 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 	</div>
 	";
 }
+else
+{
+	$selectClientes = '<option selected value>Todos clientes</option>';
+	
+	foreach ($clientes as $cliente)
+	{
+		$selected = null;
+		if (!empty($_GET['c']))
+		{
+			$selected = $_GET['c'] == $cliente['id'] ? 'selected' : null;
+		}
+		
+		$selectClientes .= "<option $selected value='{$cliente['id']}'>{$cliente['nome']}</option>";
+	}
+}
 
 ?>
 	
-	<form id="caixaPesquisa" action="" method="get">
-		<input type="text" name="q" value="<?= $pesquisa; ?>" placeholder="Ex: Aguardando">
-		<button id="botaoPesquisa" type="submit" name="">
-			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+	<form id='caixaPesquisa' action='' method='get'>
+		<input type='text' name='q' value='<?= $_GET['q'] ?? null; ?>' placeholder='Ex: FRX'>
+		<select name='c'>
+			<?= $selectClientes; ?>
+		</select>
+		<button id='botaoPesquisa' type='submit' name=''>
+			<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-search'><circle cx='11' cy='11' r='8'></circle><line x1='21' y1='21' x2='16.65' y2='16.65'></line></svg>
 		</button>
 	</form>
 </header>
 
-<div class="tableResponsive">
+<div class='tableResponsive'>
 	<table>
 		<thead>
 			<tr>
@@ -110,69 +125,69 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 			<?php
 			
 			$meses = [
-				1 => "Janeiro",
-				2 => "Fevereiro",
-				3 => "Março",
-				4 => "Abril",
-				5 => "Maio",
-				6 => "Junho",
-				7 => "Julho",
-				8 => "Agosto",
-				9 => "Setembro",
-				10 => "Outubro",
-				11 => "Novembro",
-				12 => "Dezembro"
+				1 => 'Janeiro',
+				2 => 'Fevereiro',
+				3 => 'Março',
+				4 => 'Abril',
+				5 => 'Maio',
+				6 => 'Junho',
+				7 => 'Julho',
+				8 => 'Agosto',
+				9 => 'Setembro',
+				10 => 'Outubro',
+				11 => 'Novembro',
+				12 => 'Dezembro'
 			];
 			$ultimoMes = 0;
 			
 			foreach ($propostas as $proposta)
 			{
-				if (empty($_GET["q"]))
+				if (!empty($_GET['q']) || !empty($_GET['c']))
 				{
-					$dataAceiteProposta = DateTime::createFromFormat("d/m/Y", $proposta["dataAceiteProposta"]);
-					$mes = (int)$dataAceiteProposta->format("m");
-					$ano = $dataAceiteProposta->format("Y");
+					$dataEnvioProposta = DateTime::createFromFormat('d/m/Y', $proposta['dataEnvioProposta']);
+					$mes = (int)$dataEnvioProposta->format('m');
+					$ano = $dataEnvioProposta->format('Y');
 				}
 				else
 				{
-					$dataEnvioProposta = DateTime::createFromFormat("d/m/Y", $proposta["dataEnvioProposta"]);
-					$mes = (int)$dataEnvioProposta->format("m");
-					$ano = $dataEnvioProposta->format("Y");
+					$dataAceiteProposta = DateTime::createFromFormat('d/m/Y', $proposta['dataAceiteProposta']);
+					$mes = (int)$dataAceiteProposta->format('m');
+					$ano = $dataAceiteProposta->format('Y');
 				}
 				
 				if ($ultimoMes !== $mes)
 				{
-					$relatorio = (new Proposta())->gerarRelatorio("$ano-$mes");
+					$relatorio = (new Proposta())->gerarRelatorio("$ano-$mes", empty($_GET['c']) ? null : $_GET['c']);
 					echo "<tr><td colspan='20'><h2>{$meses[$mes]}/$ano</h2></td></tr>";
 					echo "<tr><td colspan='20'><h4>{$relatorio['propostasEnviadas']} propostas enviadas, {$relatorio['propostasAceitas']} aceitas, R$ {$relatorio['valorRecebido']} recebido de R$ {$relatorio['valorTotal']}</h4></td></tr>";
 				}
 				
 				$ultimoMes = $mes;
 				
-				if ($proposta["statusPagamento"] === "Aguardando")
+				if ($proposta['statusPagamento'] === 'Aguardando')
 				{
-					$statusPagamento = "aguardando";
+					$statusPagamento = 'aguardando';
 				}
-				elseif ($proposta["statusPagamento"] === "Recebido")
+				elseif ($proposta['statusPagamento'] === 'Recebido')
 				{
-					$statusPagamento = "recebido";
+					$statusPagamento = 'recebido';
 				}
-				elseif ($proposta["statusPagamento"] === "Recusada")
+				elseif ($proposta['statusPagamento'] === 'Recusada')
 				{
-					$statusPagamento = "recusada";
+					$statusPagamento = 'recusada';
 				}
 				
-				if ($proposta["statusProposta"] === "Recusada")
+				if ($proposta['statusProposta'] === 'Recusada')
 				{
-					$statusProposta = "recusada";
+					$statusProposta = 'recusada';
 				}
-				elseif ($proposta["statusProposta"] === "Aceita")
+				elseif ($proposta['statusProposta'] === 'Aceita')
 				{
-					$statusProposta = "aceita";
+					$statusProposta = 'aceita';
 				}
 				else
 				{
-					$statusProposta = "emAnalise";
+					$statusProposta = 'emAnalise';
 				}
 
 				if ($proposta['statusProposta'] === 'Aceita' && $proposta['statusPagamento'] === 'Aguardando')
@@ -187,7 +202,7 @@ if (isset($_POST["mostrarAtualizarStatus"]))
 				}
 				else
 				{
-					$voltarEmAnalise = "N/A";
+					$voltarEmAnalise = 'N/A';
 				}
 
 				echo "

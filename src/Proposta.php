@@ -87,18 +87,24 @@ class Proposta
 
 	public function pesquisarProposta(): ?array
 	{
+		$whereCliente = null;
+
+		if (!empty($_GET['c']))
+		{
+			$whereCliente = "AND idCliente = {$_GET['c']}";
+		}
+		
 		$propostas = $this->data->search(
 			"propostas.*, clientes.nome AS nomeCliente", 
 			"propostas", [
 				"numeroProposta",
 				"statusPagamento",
 				"valor",
-				"idCliente",
 				"observacoes",
 	    	], 
 	    	$_GET["q"], 
 	    	"JOIN clientes ON propostas.idCliente = clientes.id", 
-	    	"ORDER BY dataEnvioProposta DESC;"
+	    	"$whereCliente ORDER BY dataEnvioProposta DESC;"
     	);
 		
 		$hoje = (new DateTime())->setTime(0, 0, 0);
@@ -336,16 +342,22 @@ class Proposta
 		return false;
 	}
 	
-	public function gerarRelatorio(string $data): array|bool
+	public function gerarRelatorio(string $data, ?int $idCliente = null): ?array
 	{
 		$data = new DateTime($data);
 		$mes = $data->format("m");
 		$ano = $data->format("Y");
+		$whereCliente = null;
 
-		$propostasEnviadas = $this->data->count("propostas", "WHERE MONTH(dataEnvioProposta) = $mes AND YEAR(dataEnvioProposta) = $ano");
-		$propostasAceitas = $this->data->count("propostas", "WHERE MONTH(dataAceiteProposta) = $mes AND YEAR(dataAceiteProposta) = $ano");
-		$valorRecebido = $this->data->sum("propostas", "valor", "WHERE (MONTH(dataAceiteProposta) = $mes AND YEAR(dataAceiteProposta) = $ano) AND statusPagamento = 'Recebido'");
-		$valorTotal = $this->data->sum("propostas", "valor", "WHERE (MONTH(dataAceiteProposta) = $mes AND YEAR(dataAceiteProposta) = $ano) AND statusProposta = 'Aceita'");
+		if ($idCliente)
+		{
+			$whereCliente = "AND idCliente = $idCliente";
+		}
+
+		$propostasEnviadas = $this->data->count("propostas", "WHERE MONTH(dataEnvioProposta) = $mes AND YEAR(dataEnvioProposta) = $ano $whereCliente");
+		$propostasAceitas = $this->data->count("propostas", "WHERE MONTH(dataAceiteProposta) = $mes AND YEAR(dataAceiteProposta) = $ano $whereCliente");
+		$valorRecebido = $this->data->sum("propostas", "valor", "WHERE (MONTH(dataAceiteProposta) = $mes AND YEAR(dataAceiteProposta) = $ano) AND statusPagamento = 'Recebido' $whereCliente");
+		$valorTotal = $this->data->sum("propostas", "valor", "WHERE (MONTH(dataAceiteProposta) = $mes AND YEAR(dataAceiteProposta) = $ano) AND statusProposta = 'Aceita' $whereCliente");
 		
 		return [
 			"data" => "$mes/$ano",

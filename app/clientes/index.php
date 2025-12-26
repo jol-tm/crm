@@ -1,33 +1,33 @@
 <?php
 
-$pageTitle = "Clientes";
+$pageTitle = 'Clientes';
 
-require_once "../../src/header.php";
-require_once "../../src/Cliente.php";
+require_once '../../src/header.php';
+require_once '../../src/Cliente.php';
 
 $cliente = new Cliente();
 
-if (isset($_POST["botaoCadastrarCliente"]))
+if (isset($_POST['botaoCadastrarCliente']))
 {
 	$cliente->cadastrarCliente();
 }
 
-if (isset($_POST["atualizarCliente"]))
+if (isset($_POST['atualizarCliente']))
 {
 	$cliente->atualizarCliente();
 }
 
-if (isset($_POST["excluirCliente"]))
+if (isset($_POST['excluirCliente']))
 {
 	$cliente->excluirCliente();
 }
 
-if (isset($_POST["mostrarAtualizarCliente"]))
+if (isset($_POST['mostrarAtualizarCliente']))
 {
-	$clienteParaAtualizar = $cliente->verCliente($_POST["id"]);
+	$clienteParaAtualizar = $cliente->verCliente($_POST['id']);
 
 	echo "
-	<div class='formWrapper'>
+	<div class='containerForm'>
 	<form action='' method='post' class='customForm'>
 		<input type='hidden' name ='id' value='{$clienteParaAtualizar['id']}'>
 		<label for='nome'>Nome</label>
@@ -52,33 +52,33 @@ if (isset($_POST["mostrarAtualizarCliente"]))
 }
 
 ?>
-
-	<button id="botaoMostrarCadastrarCliente">Cadastrar cliente</button>
+	
+	<button id='botaoMostrarCadastrarCliente'>Cadastrar cliente</button>
 </header>
 
-<div id="formCadastrarCliente" class="containerForm">
-	<form action="" method="post" class="customForm">
+<div id='formCadastrarCliente' class='containerForm'>
+	<form action='' method='post' class='customForm'>
 		<h2>Cadastrar Cliente</h2>
-		<label for="nome">Nome</label>
-		<input type="text" name="nome" id="nome" placeholder="" maxlength="255" required>
-		<label for="cpf_cnpj">CPF / CNPJ</label>
-		<input type="text" name="cpf_cnpj" id="cpf_cnpj" placeholder="" maxlength="18">
-		<label for="razaoSocial">Razão social</label>
-		<input type="text" name="razaoSocial" id="razaoSocial" placeholder="" maxlength="255">
-		<label for="emailContato">Email contato</label>
-		<input type="email" name="emailContato" id="emailContato" placeholder="" maxlength="255">
-		<label for="emailNF">Email NF</label>
-		<input type="email" name="emailNF" id="emailNF" placeholder="" maxlength="255">
-		<label for="telefone">Telefone</label>
-		<input type="text" name="telefone" id="telefone" placeholder="" maxlength="15">
-		<label for="endereco">Endereço</label>
-		<input type="text" name="endereco" id="endereco" placeholder="" maxlength="255">
-		<button id="botaoCadastrarCliente" type="submit" name="botaoCadastrarCliente">Cadastrar</button>
-		<button id="botaoCancelarCadastrarCliente" type="button">Cancelar</button>
+		<label for='nome'>Nome</label>
+		<input type='text' name='nome' id='nome' placeholder='' maxlength='255' required>
+		<label for='cpf_cnpj'>CPF / CNPJ</label>
+		<input type='text' name='cpf_cnpj' id='cpf_cnpj' placeholder='' maxlength='18'>
+		<label for='razaoSocial'>Razão social</label>
+		<input type='text' name='razaoSocial' id='razaoSocial' placeholder='' maxlength='255'>
+		<label for='emailContato'>Email contato</label>
+		<input type='email' name='emailContato' id='emailContato' placeholder='' maxlength='255'>
+		<label for='emailNF'>Email NF</label>
+		<input type='email' name='emailNF' id='emailNF' placeholder='' maxlength='255'>
+		<label for='telefone'>Telefone</label>
+		<input type='text' name='telefone' id='telefone' placeholder='' maxlength='15'>
+		<label for='endereco'>Endereço</label>
+		<input type='text' name='endereco' id='endereco' placeholder='' maxlength='255'>
+		<button id='botaoCadastrarCliente' type='submit' name='botaoCadastrarCliente'>Cadastrar</button>
+		<button id='botaoCancelarCadastrarCliente' type='button'>Cancelar</button>
 	</form>
 </div>
 
-<div class="tableResponsive">
+<div class='tableResponsive'>
 	<table>
 		<thead>
 			<tr>
@@ -94,6 +94,7 @@ if (isset($_POST["mostrarAtualizarCliente"]))
 			</tr>
 		</thead>
 		<tbody>
+		
 	<?php
 
 		$clientes = $cliente->verClientes();
@@ -102,13 +103,13 @@ if (isset($_POST["mostrarAtualizarCliente"]))
 		{
 			echo "
 			<tr>
-				<td>" . htmlspecialchars($cliente["nome"]) . "</td>
-				<td>" . htmlspecialchars($cliente["cpf_cnpj"]) . "</td>
-				<td>" . htmlspecialchars($cliente["razaoSocial"]) . "</td>
-				<td>" . htmlspecialchars($cliente["emailContato"]) . "</td>
-				<td>" . htmlspecialchars($cliente["emailNF"]) . "</td>
-				<td>" . htmlspecialchars($cliente["telefone"]) . "</td>
-				<td>" . htmlspecialchars($cliente["endereco"]) . "</td>
+				<td>" . htmlspecialchars($cliente['nome']) . "</td>
+				<td>" . htmlspecialchars($cliente['cpf_cnpj']) . "</td>
+				<td>" . htmlspecialchars($cliente['razaoSocial']) . "</td>
+				<td>" . htmlspecialchars($cliente['emailContato']) . "</td>
+				<td>" . htmlspecialchars($cliente['emailNF']) . "</td>
+				<td>" . htmlspecialchars($cliente['telefone']) . "</td>
+				<td>" . htmlspecialchars($cliente['endereco']) . "</td>
 				<td>
 					<form action='' method='post'>
 						<input type='hidden' name='id' value='{$cliente['id']}'>

@@ -50,7 +50,7 @@ header {
 
 nav {
 	  z-index: 1;
-	  position: fixed;
+	  position: absolute;
 	  background-color: var(--primaryColor);
 }
 
@@ -122,7 +122,7 @@ label {
 }
 
 input, select {
-	  box-sizing: border-box;
+    box-sizing: border-box;
 	  width: 100%;
 	  border: 2px solid var(--primaryColor);
 	  background-color: var(--lightColor);
@@ -151,7 +151,7 @@ button:active {
 }
 
 table {
-    width: 100vw;
+    width: 100%;
     border-collapse: collapse;
     text-align: center;
 }
@@ -167,8 +167,9 @@ th, td {
 }
 
 .tableResponsive {
-    max-height: 100%;
-    max-width: 100%;
+    box-sizing: border-box;
+    height: calc(100dvh - 1rem);
+    width: calc(100dvw - 1rem);
     overflow: auto;
     border: 2px solid var(--primaryColor);
     background-color: var(--lightColor);
@@ -274,6 +275,10 @@ th, td {
 #caixaPesquisa {
 	  padding: 0;
 	  flex-direction: row;
+	  
+	  input, select {
+	      width: 25%;
+	  }
 }
 
 #botaoAtualizarStatusProposta {

@@ -21,24 +21,24 @@ class DataRepository
 				$data[$passwordKey] = $password[$passwordKey];
 			}
 
-			$columns = implode(", ", array_keys($data));
-			$placeholders = ":" . implode(", :", array_keys($data));
+			$columns = implode(', ', array_keys($data));
+			$placeholders = ':' . implode(', :', array_keys($data));
 
 			$sql = "INSERT INTO $table ($columns) VALUES ($placeholders)";
 
 			$stmt = $this->connection->prepare($sql);
 			$stmt->execute($data);
 						
-			return ["success" => true];
+			return ['success' => true];
 		}
 		catch (PDOException $e)
 		{
-			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return ["success" => false, "errorCode" => $e->getCode()];
+			error_log(date('Y-m-d H:i:s') . ' | ' . $e . PHP_EOL, 3, '../../errors.log');
+			return ['success' => false, 'errorCode' => $e->getCode()];
 		}
 	}
 
-	public function read(string $columns = "*", string $table, ?string $parameters = null): ?array
+	public function read(string $columns = '*', string $table, ?string $parameters = null): ?array
 	{
 		try
 		{
@@ -50,12 +50,12 @@ class DataRepository
 		}
 		catch (PDOException $e)
 		{
-			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
+			error_log(date('Y-m-d H:i:s') . ' | ' . $e . PHP_EOL, 3, '../../errors.log');
 			return null;
 		}
 	}
 
-	public function search(string $selectColumns = "*", string $table, array $searchColumns, string $keyWord, ?string $joinParameters = null, ?string $whereParameters = null): ?array
+	public function search(string $selectColumns = '*', string $table, array $searchColumns, string $keyWord, ?string $joinParameters = null, ?string $whereParameters = null): ?array
 	{
 		try
 		{
@@ -66,12 +66,12 @@ class DataRepository
 				$likeClauses[] = "$column LIKE :keyWord";
 			}
 
-			$whereClause = implode(" OR ", $likeClauses);
+			$whereClause = implode(' OR ', $likeClauses);
 
-			$sql = "SELECT $selectColumns FROM $table $joinParameters WHERE $whereClause $whereParameters";
-
+			$sql = "SELECT $selectColumns FROM $table $joinParameters WHERE ($whereClause) $whereParameters";
+			
 			$stmt = $this->connection->prepare($sql);
-			$stmt->bindValue(":keyWord", "%$keyWord%", PDO::PARAM_STR);
+			$stmt->bindValue(':keyWord', "%$keyWord%", PDO::PARAM_STR);
 			$stmt->execute();
 
 			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -80,7 +80,7 @@ class DataRepository
 		}
 		catch (PDOException $e)
 		{
-			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
+			error_log(date('Y-m-d H:i:s') . ' | ' . $e . PHP_EOL, 3, '../../errors.log');
 			return null;
 		}
 	}
@@ -97,7 +97,7 @@ class DataRepository
 		}
 		catch (PDOException $e)
 		{
-			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
+			error_log(date('Y-m-d H:i:s') . ' | ' . $e . PHP_EOL, 3, '../../errors.log');
 			return null;
 		}
 	}
@@ -115,7 +115,7 @@ class DataRepository
 		} 	
 		catch (PDOException $e)
 		{
-			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
+			error_log(date('Y-m-d H:i:s') . ' | ' . $e . PHP_EOL, 3, '../../errors.log');
 			return null;
 		}
 	}
@@ -135,19 +135,19 @@ class DataRepository
 				$updateAssignments[] = "$column = :$column";
 			}
 
-			$updates = implode(", ", $updateAssignments);
+			$updates = implode(', ', $updateAssignments);
 
 			$sql = "UPDATE $table SET $updates WHERE $keyName = :$keyName";
 
 			$stmt = $this->connection->prepare($sql);
 			$stmt->execute($data);
 
-			return ["success" => true, "affectedRows" => $stmt->rowCount()];
+			return ['success' => true, 'affectedRows' => $stmt->rowCount()];
 		}
 		catch (PDOException $e)
 		{
-			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return ["success" => false, "errorCode" => $e->getCode()];
+			error_log(date('Y-m-d H:i:s') . ' | ' . $e . PHP_EOL, 3, '../../errors.log');
+			return ['success' => false, 'errorCode' => $e->getCode()];
 		}
 	}
 
@@ -162,12 +162,12 @@ class DataRepository
 			$stmt = $this->connection->prepare($sql);
 			$stmt->execute($key);
 
-			return ["success" => true, "affectedRows" => $stmt->rowCount()];
+			return ['success' => true, 'affectedRows' => $stmt->rowCount()];
 		}
 		catch (PDOException $e)
 		{
-			error_log(date("Y-m-d H:i:s") . " | " . $e . "\n\n", 3, "../../errors.log");
-			return ["success" => false, "errorCode" => $e->getCode()];
+			error_log(date('Y-m-d H:i:s') . ' | ' . $e . PHP_EOL, 3, '../../errors.log');
+			return ['success' => false, 'errorCode' => $e->getCode()];
 		}
 	}
 }
